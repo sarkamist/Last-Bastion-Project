@@ -10,8 +10,9 @@ public class EnemySpawner : MonoBehaviour
     public float borderOffset;
 
     public List<GameObject> availableEnemyPrefabs;
-    public int initialEnemiesAmount;
-    public float roundDuration;
+    public int initialEnemiesAmount = 10;
+    public int enemyAmountIncrease = 2;
+    private int currentEnemiesAmount;
 
     private List<GameObject> currentWaveEnemies;
     private float spawnInterval;
@@ -30,18 +31,30 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
+        currentEnemiesAmount = initialEnemiesAmount;
+        RoundManager.Instance.RoundStart += OnRoundStart;
+        RoundManager.Instance.RoundEnd += OnRoundEnd;
+    }
+
+    void OnRoundStart(float roundDuration) {
         currentWaveEnemies = new List<GameObject>();
 
-        for (int i = 0; i < initialEnemiesAmount; i++) {
+        for (int i = 0; i < currentEnemiesAmount; i++)
+        {
             currentWaveEnemies.Add(availableEnemyPrefabs[Random.Range(0, availableEnemyPrefabs.Count)]);
         }
 
         spawnInterval = roundDuration / currentWaveEnemies.Count;
 
-        StartCoroutine(SpawnEnemiesCoroutine());
+        StartCoroutine(SpawnEnemiesLoop());
     }
 
-    IEnumerator SpawnEnemiesCoroutine()
+    void OnRoundEnd()
+    {
+        currentEnemiesAmount += enemyAmountIncrease;
+    }
+
+    IEnumerator SpawnEnemiesLoop()
     {
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
@@ -81,7 +94,7 @@ public class EnemySpawner : MonoBehaviour
                 z = Random.Range(bounds.min.z + borderOffset, bounds.max.z - borderOffset);
                 break;
             default:
-                x = z = 0; //fallback
+                x = z = 0; //Fallback
                 break;
         }
 

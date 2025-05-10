@@ -1,45 +1,88 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Damageable : MonoBehaviour
 {
-    public float maxHealth;
-    private float currentHealth;
+    #region Properties
+    [SerializeField]
+    public Faction _faction;
+    public Faction Faction
+    {
+        get => _faction;
+        set => _faction = value;
+    }
 
-    public Dictionary<Damage.DamageType, float> resistances;
+    [SerializeField]
+    public float _maxHealth = 100f;
+    public float MaxHealth
+    {
+        get => _maxHealth;
+        set => _maxHealth = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private float _currentHealth;
+    public float CurrentHealth {
+        get => _currentHealth;
+        private set => _currentHealth = value;
+    }
+    #endregion
+
+    #region Events
+    public struct DamageTakenContext {
+        public Damageable origin;
+        public Attacker source;
+        public DamageType damageType;
+        public float damageAmount;
+
+        public DamageTakenContext(Damageable origin, Attacker source, DamageType damageType, float damageAmount)
+        {
+            this.origin = origin;
+            this.source = source;
+            this.damageType = damageType;
+            this.damageAmount = damageAmount;
+        }
+    }
+
+    public event Action<DamageTakenContext> DamageTaken;
+
+    public struct DamageableDeathContext
+    {
+        public Damageable origin;
+        public Attacker source;
+
+        public DamageableDeathContext(Damageable origin, Attacker source)
+        {
+            this.origin = origin;
+            this.source = source;
+        }
+    }
+
+    public event Action<DamageableDeathContext> DamageableDeath;
+    #endregion
 
     void Start()
     {
-        currentHealth = maxHealth;
+        CurrentHealth = MaxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
-    void TakeDamage(Damage damage) {
-        float damageAmount = damage.damageAmount;
-
-        //Apply resistances if any
-        if (resistances.ContainsKey(damage.damageType))
+    public void TakeDamage(Attacker source, DamageType damageType, float damageAmount) {
+        if (damageAmount > CurrentHealth)
         {
-            damageAmount *= resistances[damage.damageType];
-        }
-
-        if (damageAmount > currentHealth)
-        {
-            currentHealth = 0f;
-            Death();
+            CurrentHealth = 0f;
+            Death(source);
         }
         else
         {
-            currentHealth -= damageAmount;
+            CurrentHealth -= damageAmount;
         }
+
+        DamageTaken?.Invoke(new DamageTakenContext(this, source, damageType, damageAmount));
     }
 
-    void Death() {
-        
+    void Death(Attacker source) {
+        Destroy(gameObject);
+
+        DamageableDeath?.Invoke(new DamageableDeathContext(this, source));
     }
 }
