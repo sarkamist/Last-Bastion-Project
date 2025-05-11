@@ -29,6 +29,14 @@ public class HUDManager : MonoBehaviour
         private set => _txt_BastionHealth = value;
     }
 
+    [SerializeField, ReadOnly]
+    private TextMeshProUGUI _txt_Defeat;
+    public TextMeshProUGUI TXT_Defeat
+    {
+        get => _txt_Defeat;
+        private set => _txt_Defeat = value;
+    }
+
     [Header("References")]
     [SerializeField]
     private Damageable _bastionRef;
@@ -44,13 +52,28 @@ public class HUDManager : MonoBehaviour
         TXT_CurrentRound = transform.Find("TXT_CurrentRound").GetComponent<TextMeshProUGUI>();
         TXT_RemainingDuration = transform.Find("TXT_RemainingDuration").GetComponent<TextMeshProUGUI>();
         TXT_BastionHealth = transform.Find("TXT_BastionHealth").GetComponent<TextMeshProUGUI>();
+        TXT_Defeat = transform.Find("TXT_Defeat").GetComponent<TextMeshProUGUI>();
+        TXT_Defeat.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        TXT_CurrentRound.text = $"Current Round: {RoundManager.Instance.CurrentRound}";
+        TXT_CurrentRound.text = $"Current Round: {RoundManager.Instance.CurrentRound} ({EnemySpawner.Instance.CurrentEnemiesAmount} enemies)";
         TXT_RemainingDuration.text = $"Remaining Duration: {RoundManager.Instance.RoundRemainingDuration:0.0}s";
         TXT_BastionHealth.text = $"Bastion Health: {BastionRef.CurrentHealth}/{BastionRef.MaxHealth}";
+
+        if (RoundManager.Instance.IsGameover)
+        {
+            TXT_Defeat.enabled = true;
+        }
+    }
+
+    public void ExitGame() {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
     }
 }

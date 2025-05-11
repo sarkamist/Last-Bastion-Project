@@ -80,7 +80,7 @@ public class RoundManager : MonoBehaviour
             RoundRemainingDuration -= Time.deltaTime;
             if (RoundRemainingDuration <= 0)
             {
-                if (CurrentRound != 0) RoundEnd?.Invoke();
+                RoundEnd?.Invoke();
                 RoundRemainingDuration = RoundMaxDuration;
                 CurrentRound += 1;
                 RoundStart?.Invoke(RoundRemainingDuration);

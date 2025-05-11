@@ -48,7 +48,7 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Current Wave Data")]
     [SerializeField, ReadOnly]
-    private int _currentEnemiesAmount;
+    private int _currentEnemiesAmount = 0;
     public int CurrentEnemiesAmount {
         get => _currentEnemiesAmount;
         private set => _currentEnemiesAmount = value;
@@ -83,7 +83,6 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
-        CurrentEnemiesAmount = InitialEnemiesAmount;
         RoundManager.Instance.RoundStart += OnRoundStart;
         RoundManager.Instance.RoundEnd += OnRoundEnd;
     }
@@ -103,7 +102,14 @@ public class EnemySpawner : MonoBehaviour
 
     void OnRoundEnd()
     {
-        CurrentEnemiesAmount += EnemyAmountIncrease;
+        if (RoundManager.Instance.CurrentRound == 0)
+        {
+            CurrentEnemiesAmount = InitialEnemiesAmount;
+        }
+        else
+        {
+            CurrentEnemiesAmount += EnemyAmountIncrease;
+        }
     }
 
     IEnumerator SpawnEnemiesLoop()
