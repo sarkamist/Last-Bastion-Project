@@ -4,6 +4,7 @@ using UnityEngine;
 public class Damageable : MonoBehaviour
 {
     #region Properties
+    [Header("Targeting")]
     [SerializeField]
     public Faction _faction;
     public Faction Faction
@@ -12,6 +13,15 @@ public class Damageable : MonoBehaviour
         set => _faction = value;
     }
 
+    [SerializeField, ReadOnly]
+    public Transform _body;
+    public Transform Body
+    {
+        get => _body;
+        private set => _body = value;
+    }
+
+    [Header("Health")]
     [SerializeField]
     public float _maxHealth = 100f;
     public float MaxHealth
@@ -63,6 +73,7 @@ public class Damageable : MonoBehaviour
 
     void Start()
     {
+        Body = transform.Find("Body");
         CurrentHealth = MaxHealth;
     }
 
@@ -81,8 +92,7 @@ public class Damageable : MonoBehaviour
     }
 
     void Death(Attacker source) {
-        Destroy(gameObject);
-
         DamageableDeath?.Invoke(new DamageableDeathContext(this, source));
+        Destroy(gameObject);
     }
 }

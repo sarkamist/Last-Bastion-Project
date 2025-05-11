@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Attacker : MonoBehaviour
 {
     #region Properties
+    [Header("Targeting")]
     [SerializeField]
     private Faction _faction;
     public Faction Faction
@@ -21,6 +23,7 @@ public class Attacker : MonoBehaviour
         private set => _currentTarget = value;
     }
 
+    [Header("Movement")]
     [SerializeField, ReadOnly]
     private Moveable _moveableRef;
     public Moveable MoveableRef
@@ -29,6 +32,7 @@ public class Attacker : MonoBehaviour
         private set => _moveableRef = value;
     }
 
+    [Header("Attack")]
     [SerializeField]
     private float _range = 5f;
     public float Range
@@ -38,20 +42,21 @@ public class Attacker : MonoBehaviour
     }
 
     [SerializeField]
-    private DamageType _damageType = DamageType.Physical;
-    public DamageType DamageType
+    private GameObject _projectilePrefab = null;
+    public GameObject ProjectilePrefab
     {
-        get => _damageType;
-        set => _damageType = value;
+        get => _projectilePrefab;
+        set => _projectilePrefab = value;
     }
 
-    [SerializeField]
-    private float _damageAmount = 10f;
-    public float DamageAmount
+    [SerializeField, ReadOnly]
+    public Transform _body;
+    public Transform Body
     {
-        get => _damageAmount;
-        set => _damageAmount = value;
+        get => _body;
+        private set => _body = value;
     }
+
 
     [SerializeField]
     private float _attackSpeed = 2f;
@@ -68,11 +73,29 @@ public class Attacker : MonoBehaviour
         get => _attackCooldown;
         private set => _attackCooldown = value;
     }
+
+    [Header("Damage")]
+    [SerializeField]
+    private DamageType _damageType = DamageType.Physical;
+    public DamageType DamageType
+    {
+        get => _damageType;
+        set => _damageType = value;
+    }
+
+    [SerializeField]
+    private float _damageAmount = 10f;
+    public float DamageAmount
+    {
+        get => _damageAmount;
+        set => _damageAmount = value;
+    }
     #endregion
 
     void Start()
     {
-        if (GetComponent<Moveable>() is Moveable moveable)
+        Moveable moveable = GetComponent<Moveable>();
+        if (moveable != null)
         {
             MoveableRef = moveable;
         }
@@ -80,6 +103,7 @@ public class Attacker : MonoBehaviour
         {
             MoveableRef = null;
         }
+        Body = transform.Find("Body");
     }
 
     void Update()
@@ -117,7 +141,7 @@ public class Attacker : MonoBehaviour
     }
 
     void CheckAttackConditions() {
-        if (CurrentTarget is null) return;
+        if (CurrentTarget == null) return;
 
         float distanceToTarget = Vector3.Distance(transform.position, CurrentTarget.transform.position);
         if (distanceToTarget <= Range) {
@@ -130,13 +154,20 @@ public class Attacker : MonoBehaviour
                 Attack();
             }
         }
-        else if (MoveableRef is not null)
+        else if (MoveableRef != null)
         {
             MoveableRef.MoveAgainst(CurrentTarget.transform);
         }
     }
 
     void Attack() {
-        CurrentTarget.TakeDamage(this, DamageType, DamageAmount);
+        if (ProjectilePrefab != null && Body != null)
+        {
+            GameObject projectile = Instantiate(ProjectilePrefab, Body.position, Body.rotation);
+            projectile.GetComponent<AttackProjectile>().Configure(this, CurrentTarget, DamageType, DamageAmount);
+        }
+        else {
+            CurrentTarget.TakeDamage(this, DamageType, DamageAmount);
+        }
     }
 }

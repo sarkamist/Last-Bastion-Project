@@ -6,16 +6,68 @@ public class EnemySpawner : MonoBehaviour
 {
     public static EnemySpawner Instance { get; private set; }
 
-    public Renderer spawnArea;
-    public float borderOffset;
+    #region Properties
+    [Header("Map Parameters")]
+    [SerializeField]
+    private Renderer _spawnArea = null;
+    public Renderer SpawnArea {
+        get => _spawnArea;
+        set => _spawnArea = value;
+    }
 
-    public List<GameObject> availableEnemyPrefabs;
-    public int initialEnemiesAmount = 10;
-    public int enemyAmountIncrease = 2;
-    private int currentEnemiesAmount;
+    [SerializeField]
+    private float _borderOffset = 1f;
+    public float BorderOffset {
+        get => _borderOffset;
+        set => _borderOffset = value;
+    }
 
-    private List<GameObject> currentWaveEnemies;
-    private float spawnInterval;
+    [Header("Wave Parameters")]
+    [SerializeField]
+    private List<GameObject> _availableEnemyPrefabs;
+    public List<GameObject> AvailableEnemyPrefabs {
+        get => _availableEnemyPrefabs;
+        set => _availableEnemyPrefabs = value;
+    }
+
+    [SerializeField]
+    private int _initialEnemiesAmount = 10;
+    public int InitialEnemiesAmount {
+        get => _initialEnemiesAmount;
+        set => _initialEnemiesAmount = value;
+    }
+
+    [SerializeField]
+    private int _enemyAmountIncrease = 2;
+    public int EnemyAmountIncrease {
+        get => _enemyAmountIncrease;
+        set => _enemyAmountIncrease = value;
+    }
+
+
+
+    [Header("Current Wave Data")]
+    [SerializeField, ReadOnly]
+    private int _currentEnemiesAmount;
+    public int CurrentEnemiesAmount {
+        get => _currentEnemiesAmount;
+        private set => _currentEnemiesAmount = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private List<GameObject> _currentWaveEnemies;
+    public List<GameObject> CurrentWaveEnemies {
+        get => _currentWaveEnemies;
+        private set => _currentWaveEnemies = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private float _spawnInterval;
+    public float SpawnInterval {
+        get => _spawnInterval;
+        private set => _spawnInterval = value;
+    }
+    #endregion
 
     void Awake()
     {
@@ -31,45 +83,45 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
-        currentEnemiesAmount = initialEnemiesAmount;
+        CurrentEnemiesAmount = InitialEnemiesAmount;
         RoundManager.Instance.RoundStart += OnRoundStart;
         RoundManager.Instance.RoundEnd += OnRoundEnd;
     }
 
     void OnRoundStart(float roundDuration) {
-        currentWaveEnemies = new List<GameObject>();
+        CurrentWaveEnemies = new List<GameObject>();
 
-        for (int i = 0; i < currentEnemiesAmount; i++)
+        for (int i = 0; i < CurrentEnemiesAmount; i++)
         {
-            currentWaveEnemies.Add(availableEnemyPrefabs[Random.Range(0, availableEnemyPrefabs.Count)]);
+            CurrentWaveEnemies.Add(AvailableEnemyPrefabs[Random.Range(0, AvailableEnemyPrefabs.Count)]);
         }
 
-        spawnInterval = roundDuration / currentWaveEnemies.Count;
+        SpawnInterval = roundDuration / CurrentWaveEnemies.Count;
 
         StartCoroutine(SpawnEnemiesLoop());
     }
 
     void OnRoundEnd()
     {
-        currentEnemiesAmount += enemyAmountIncrease;
+        CurrentEnemiesAmount += EnemyAmountIncrease;
     }
 
     IEnumerator SpawnEnemiesLoop()
     {
-        for (int i = 0; i < currentWaveEnemies.Count; i++)
+        for (int i = 0; i < CurrentWaveEnemies.Count; i++)
         {
             SpawnEnemy(i);
-            yield return new WaitForSeconds(spawnInterval);
+            yield return new WaitForSeconds(SpawnInterval);
         }
     }
 
     void SpawnEnemy(int index) {
         Vector3 spawnPoint = GetRandomEdgePosition();
-        Instantiate(currentWaveEnemies[index], spawnPoint, Quaternion.identity);
+        Instantiate(CurrentWaveEnemies[index], spawnPoint, Quaternion.identity);
     }
 
     Vector3 GetRandomEdgePosition() {
-        Bounds bounds = spawnArea.bounds;
+        Bounds bounds = SpawnArea.bounds;
         float x, z;
 
         //Randomly determine one of the four edges of the spawnArea (0 = top, 1 = bottom, 2 = left, 3 = right);
@@ -78,27 +130,27 @@ public class EnemySpawner : MonoBehaviour
         //Assign a random x and z postion depending on the selected edge
         switch (edge) {
             case 0: //Top
-                x = Random.Range(bounds.min.x + borderOffset, bounds.max.x - borderOffset);
-                z = bounds.max.z - borderOffset;
+                x = Random.Range(bounds.min.x + BorderOffset, bounds.max.x - BorderOffset);
+                z = bounds.max.z - BorderOffset;
                 break;
             case 1: //Bottom
-                x = Random.Range(bounds.min.x + borderOffset, bounds.max.x - borderOffset);
-                z = bounds.min.z + borderOffset;
+                x = Random.Range(bounds.min.x + BorderOffset, bounds.max.x - BorderOffset);
+                z = bounds.min.z + BorderOffset;
                 break;
             case 2: //Left
-                x = bounds.min.x + borderOffset;
-                z = Random.Range(bounds.min.z + borderOffset, bounds.max.z - borderOffset);
+                x = bounds.min.x + BorderOffset;
+                z = Random.Range(bounds.min.z + BorderOffset, bounds.max.z - BorderOffset);
                 break;
             case 3: //Right
-                x = bounds.max.x - borderOffset;
-                z = Random.Range(bounds.min.z + borderOffset, bounds.max.z - borderOffset);
+                x = bounds.max.x - BorderOffset;
+                z = Random.Range(bounds.min.z + BorderOffset, bounds.max.z - BorderOffset);
                 break;
             default:
                 x = z = 0; //Fallback
                 break;
         }
 
-        float y = spawnArea.bounds.center.y;
+        float y = SpawnArea.bounds.center.y;
 
         return new Vector3(x, y, z);
     }

@@ -24,7 +24,8 @@ public class HealthBar : MonoBehaviour
 
     void Start()
     {
-        if (gameObject.GetComponent<Damageable>() is Damageable damageable)
+        Damageable damageable = GetComponent<Damageable>();
+        if (damageable != null)
         {
             DamageableRef = damageable;
             DamageableRef.DamageTaken += OnDamageTaken;
@@ -36,8 +37,7 @@ public class HealthBar : MonoBehaviour
     }
 
     void OnDamageTaken(Damageable.DamageTakenContext context) {
-        if (HealthBarFill is null) return;
-        Debug.Log("DamageTaken");
+        if (HealthBarFill == null) return;
 
         HealthBarFill.fillAmount = context.origin.CurrentHealth / context.origin.MaxHealth;
     }
