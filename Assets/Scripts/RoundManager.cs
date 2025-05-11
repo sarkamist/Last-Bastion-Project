@@ -8,6 +8,16 @@ public class RoundManager : MonoBehaviour
     public static RoundManager Instance { get; private set; }
 
     #region Properties
+
+    [Header("Game Management")]
+    [SerializeField]
+    private GameObject _bastionRef = null;
+    public GameObject BastionRef
+    {
+        get => _bastionRef;
+        set => _bastionRef = value;
+    }
+
     [SerializeField, ReadOnly]
     private bool _isGameover = false;
     public bool IsGameover {
@@ -15,8 +25,9 @@ public class RoundManager : MonoBehaviour
         set => _isGameover = value;
     }
 
+    [Header("Round Management")]
     [SerializeField, ReadOnly]
-    private int _currentRound = 1;
+    private int _currentRound = 0;
     public int CurrentRound
     {
         get => _currentRound;
@@ -24,10 +35,18 @@ public class RoundManager : MonoBehaviour
     }
 
     [SerializeField]
-    private float _roundDuration = 30f;
-    public float RoundDuration {
-        get => _roundDuration;
-        set => _roundDuration = value;
+    private float _roundMaxDuration = 30f;
+    public float RoundMaxDuration {
+        get => _roundMaxDuration;
+        set => _roundMaxDuration = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private float _roundRemainingDuration = 5f;
+    public float RoundRemainingDuration
+    {
+        get => _roundRemainingDuration;
+        set => _roundRemainingDuration = value;
     }
     #endregion
 
@@ -50,17 +69,28 @@ public class RoundManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(RoundLoop());
+        CurrentRound = 0;
+        BastionRef.GetComponent<Damageable>().DamageableDeath += OnBastionDeath;
     }
 
-    IEnumerator RoundLoop()
+    private void Update()
     {
-        while (!IsGameover)
+        if (!IsGameover)
         {
-            CurrentRound++;
-            RoundStart?.Invoke(RoundDuration);
-            yield return new WaitForSeconds(RoundDuration);
-            RoundEnd?.Invoke();
+            RoundRemainingDuration -= Time.deltaTime;
+            if (RoundRemainingDuration <= 0)
+            {
+                if (CurrentRound != 0) RoundEnd?.Invoke();
+                RoundRemainingDuration = RoundMaxDuration;
+                CurrentRound += 1;
+                RoundStart?.Invoke(RoundRemainingDuration);
+            }
         }
+    }
+
+    public void OnBastionDeath(Damageable.DamageableDeathContext context)
+    {
+        IsGameover = true;
+        Debug.Log("DEFEAT!");
     }
 }

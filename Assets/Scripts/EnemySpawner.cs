@@ -31,7 +31,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
     [SerializeField]
-    private int _initialEnemiesAmount = 10;
+    private int _initialEnemiesAmount = 4;
     public int InitialEnemiesAmount {
         get => _initialEnemiesAmount;
         set => _initialEnemiesAmount = value;
@@ -110,8 +110,9 @@ public class EnemySpawner : MonoBehaviour
     {
         for (int i = 0; i < CurrentWaveEnemies.Count; i++)
         {
+            if (RoundManager.Instance.IsGameover) yield break;
             SpawnEnemy(i);
-            yield return new WaitForSeconds(SpawnInterval);
+            yield return new WaitForSeconds(SpawnInterval - Random.Range(0f, SpawnInterval * 0.5f));
         }
     }
 

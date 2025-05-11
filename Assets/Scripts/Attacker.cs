@@ -23,6 +23,14 @@ public class Attacker : MonoBehaviour
         private set => _currentTarget = value;
     }
 
+    [SerializeField, ReadOnly]
+    private float _acquisitionDelay = 0f;
+    public float AcquisitionDelay
+    {
+        get => _acquisitionDelay;
+        set => _acquisitionDelay = value;
+    }
+
     [Header("Movement")]
     [SerializeField, ReadOnly]
     private Moveable _moveableRef;
@@ -34,11 +42,19 @@ public class Attacker : MonoBehaviour
 
     [Header("Attack")]
     [SerializeField]
-    private float _range = 5f;
-    public float Range
+    private float _maxRange = 5f;
+    public float MaxRange
     {
-        get => _range;
-        set => _range = value;
+        get => _maxRange;
+        set => _maxRange = value;
+    }
+
+    [SerializeField]
+    private float _minRange = 5f;
+    public float MinRange
+    {
+        get => _minRange;
+        set => _minRange = value;
     }
 
     [SerializeField]
@@ -108,7 +124,17 @@ public class Attacker : MonoBehaviour
 
     void Update()
     {
-        AcquireTarget();
+        if (CurrentTarget == null || !IsInRange(CurrentTarget.transform))
+        {
+            if (AcquisitionDelay <= 0f)
+            {
+                AcquireTarget();
+            }
+            else {
+                AcquisitionDelay -= Time.deltaTime;
+            }
+        }
+
         CheckAttackConditions();
     }
 
@@ -117,35 +143,29 @@ public class Attacker : MonoBehaviour
         damageables = damageables.Where(x => 
             Allegiance.GetEnemies(Faction).Contains(x.Faction)
             && x.gameObject.GetInstanceID() != gameObject.GetInstanceID()
+            && Vector3.Distance(transform.position, x.transform.position) >= MinRange
         ).ToList();
 
-        float shortestDistance = Mathf.Infinity;
-        Damageable nearestDamageable = null;
-
-        foreach (Damageable damageable in damageables) {
-            float distanceToDamageable = Vector3.Distance(transform.position, damageable.transform.position);
-            if (distanceToDamageable < shortestDistance)
-            {
-                shortestDistance = distanceToDamageable;
-                nearestDamageable = damageable;
-            }
-        }
-
-        if (nearestDamageable != null)
+        if (damageables.Count > 0)
         {
-            CurrentTarget = nearestDamageable;
+            CurrentTarget = damageables[Random.Range(0, damageables.Count)];
+            AcquisitionDelay = Random.Range(0f, 2.5f);
         }
         else {
             CurrentTarget = null;
         }
     }
 
+    bool IsInRange(Transform target) {
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+        return (distanceToTarget <= MaxRange && distanceToTarget >= MinRange);
+    }
+
     void CheckAttackConditions() {
         if (CurrentTarget == null) return;
 
-        float distanceToTarget = Vector3.Distance(transform.position, CurrentTarget.transform.position);
-        if (distanceToTarget <= Range) {
-            if (MoveableRef.IsMoving) MoveableRef.Stop();
+        if (IsInRange(CurrentTarget.transform)) {
+            if (MoveableRef != null && MoveableRef.IsMoving) MoveableRef.Stop();
 
             AttackCooldown -= Time.deltaTime;
             if (AttackCooldown <= 0f)
@@ -156,7 +176,7 @@ public class Attacker : MonoBehaviour
         }
         else if (MoveableRef != null)
         {
-            MoveableRef.MoveAgainst(CurrentTarget.transform);
+            MoveableRef.MoveAgainst(CurrentTarget.transform, MaxRange);
         }
     }
 

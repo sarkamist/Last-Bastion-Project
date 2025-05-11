@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _faction: 1
+  _body: {fileID: 0}
   _maxHealth: 50
   _currentHealth: 0
 --- !u!114 &2842868247187371796
@@ -140,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8094af997e815804aa11565d350a3d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentTarget: {fileID: 0}
+  _currentWaypoint: {fileID: 0}
   _isMoving: 0
   _movementSpeed: 20
 --- !u!114 &3765213338626423633
@@ -158,9 +159,10 @@ MonoBehaviour:
   _faction: 1
   _currentTarget: {fileID: 0}
   _moveableRef: {fileID: 0}
-  _range: 3
+  _maxRange: 3
+  _minRange: 0
   _projectilePrefab: {fileID: 0}
-  _firePoint: {fileID: 0}
+  _body: {fileID: 0}
   _attackSpeed: 2
   _attackCooldown: 0
   _damageType: 1

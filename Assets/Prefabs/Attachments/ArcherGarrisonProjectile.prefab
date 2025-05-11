@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3101014415349536195}
   - component: {fileID: 2443864246246007281}
   m_Layer: 0
-  m_Name: RangedEnemyProjectile
+  m_Name: ArcherGarrisonProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: feb49806aaef57444aa49b385f332527, type: 2}
+  - {fileID: 2100000, guid: d023f37204dab67448ae9ecb8f346769, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -78,7 +78,7 @@ public class Damageable : MonoBehaviour
     }
 
     public void TakeDamage(Attacker source, DamageType damageType, float damageAmount) {
-        if (damageAmount > CurrentHealth)
+        if (damageAmount >= CurrentHealth)
         {
             CurrentHealth = 0f;
             Death(source);

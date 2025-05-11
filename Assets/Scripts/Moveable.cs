@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Moveable : MonoBehaviour
 {
@@ -25,6 +26,14 @@ public class Moveable : MonoBehaviour
         get => _movementSpeed;
         set => _movementSpeed = value;
     }
+
+    [SerializeField]
+    public float _stopDistance = 0f;
+    public float StopDistance
+    {
+        get => _stopDistance;
+        set => _stopDistance = value;
+    }
     #endregion
 
     void Update()
@@ -32,16 +41,27 @@ public class Moveable : MonoBehaviour
         if (IsMoving && CurrentWaypoint != null) {
             Vector3 direction = CurrentWaypoint.position - transform.position;
             transform.Translate(MovementSpeed * Time.deltaTime * direction.normalized, Space.World);
+
+            if (IsInStopDistance()) {
+                Stop();
+            }
         }
     }
 
-    public void MoveAgainst(Transform target) {
+    public void MoveAgainst(Transform target, float stopAtDistance = 0f) {
         CurrentWaypoint = target;
         IsMoving = true;
+        StopDistance = stopAtDistance;
     }
 
     public void Stop() {
         CurrentWaypoint = null;
         IsMoving = false;
+    }
+
+    bool IsInStopDistance()
+    {
+        float distanceToTarget = Vector3.Distance(transform.position, CurrentWaypoint.position);
+        return (distanceToTarget <= StopDistance);
     }
 }
