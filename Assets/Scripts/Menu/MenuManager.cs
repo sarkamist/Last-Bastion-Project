@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class ScenesManager : MonoBehaviour
 {
     public GameObject namePanel;
+    public GameObject[] subPanels;
 
     public void OpenPanel()
     {
@@ -14,6 +15,23 @@ public class ScenesManager : MonoBehaviour
     public void ClosePanel()
     {
         namePanel.SetActive(false);
+    }
+
+    public void OpenSubPanel(GameObject targetPanel)
+    {
+        foreach (GameObject panel in subPanels) 
+        {
+            panel.SetActive(false);
+        }
+        targetPanel.SetActive(true);
+    }
+
+    public void CloseSubPanels()
+    {
+        foreach(GameObject panel in subPanels)
+        {
+            panel.SetActive(false);
+        }
     }
 
     public void SceneLoader(string sceneName)
