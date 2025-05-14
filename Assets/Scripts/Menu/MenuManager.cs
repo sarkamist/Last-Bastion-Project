@@ -5,6 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class ScenesManager : MonoBehaviour
 {
+    public GameObject namePanel;
+
+    public void OpenPanel()
+    {
+        namePanel.SetActive(true);
+    }
+    public void ClosePanel()
+    {
+        namePanel.SetActive(false);
+    }
+
     public void SceneLoader(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
