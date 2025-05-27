@@ -126,8 +126,8 @@ public class Attacker : MonoBehaviour
     {
         AcquisitionDelay -= Time.deltaTime;
         if (
-            CurrentTarget == null
-            || !IsInRange(CurrentTarget.transform) && AcquisitionDelay <= 0f
+            CurrentTarget == null || !IsInRange(CurrentTarget.transform)
+            && AcquisitionDelay <= 0f
         )
         {
             AcquireTarget();
@@ -178,7 +178,7 @@ public class Attacker : MonoBehaviour
 
         if (IsInRange(CurrentTarget.transform))
         {
-            if (MoveableRef != null && !MoveableRef.Agent.isStopped) MoveableRef.Stop();
+            if (MoveableRef != null && !MoveableRef.Agent.isStopped) MoveableRef.DisableMovement();
 
             AttackCooldown -= Time.deltaTime;
             if (AttackCooldown <= 0f)
