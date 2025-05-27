@@ -23,7 +23,7 @@ public class Attacker : MonoBehaviour
         private set => _currentTarget = value;
     }
 
-    [SerializeField, ReadOnly]
+    [SerializeField]
     private float _acquisitionDelay = 0f;
     public float AcquisitionDelay
     {
@@ -124,48 +124,61 @@ public class Attacker : MonoBehaviour
 
     void Update()
     {
-        if (CurrentTarget == null || !IsInRange(CurrentTarget.transform))
+        AcquisitionDelay -= Time.deltaTime;
+        if (
+            CurrentTarget == null
+            || !IsInRange(CurrentTarget.transform) && AcquisitionDelay <= 0f
+        )
         {
-            if (AcquisitionDelay <= 0f)
-            {
-                AcquireTarget();
-            }
-            else {
-                AcquisitionDelay -= Time.deltaTime;
-            }
+            AcquireTarget();
         }
 
         CheckAttackConditions();
     }
 
-    void AcquireTarget() {
+    void AcquireTarget()
+    {
         List<Damageable> damageables = FindObjectsByType<Damageable>(FindObjectsSortMode.None).ToList();
-        damageables = damageables.Where(x => 
-            Allegiance.GetEnemies(Faction).Contains(x.Faction)
+        damageables = damageables.Where(x =>
+            IsEnemyFaction(x.Faction)
+            && IsOverMinRange(x.transform)
             && x.gameObject.GetInstanceID() != gameObject.GetInstanceID()
-            && Vector3.Distance(transform.position, x.transform.position) >= MinRange
         ).ToList();
 
         if (damageables.Count > 0)
         {
+            AcquisitionDelay = 5f;
             CurrentTarget = damageables[Random.Range(0, damageables.Count)];
-            AcquisitionDelay = Random.Range(0f, 2.5f);
         }
-        else {
+        else
+        {
             CurrentTarget = null;
         }
     }
-
-    bool IsInRange(Transform target) {
-        float distanceToTarget = Vector3.Distance(transform.position, target.position);
-        return (distanceToTarget <= MaxRange && distanceToTarget >= MinRange);
+    bool IsInRange(Transform target)
+    {
+        return IsOverMinRange(target) && IsWithinMaxRange(target);
     }
 
-    void CheckAttackConditions() {
+    bool IsOverMinRange(Transform target)
+    {
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+        return (distanceToTarget >= MinRange);
+    }
+
+    bool IsWithinMaxRange(Transform target)
+    {
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+        return (distanceToTarget <= MaxRange);
+    }
+
+    void CheckAttackConditions()
+    {
         if (CurrentTarget == null) return;
 
-        if (IsInRange(CurrentTarget.transform)) {
-            if (MoveableRef != null && MoveableRef.IsMoving) MoveableRef.Stop();
+        if (IsInRange(CurrentTarget.transform))
+        {
+            if (MoveableRef != null && !MoveableRef.Agent.isStopped) MoveableRef.Stop();
 
             AttackCooldown -= Time.deltaTime;
             if (AttackCooldown <= 0f)
@@ -176,18 +189,25 @@ public class Attacker : MonoBehaviour
         }
         else if (MoveableRef != null)
         {
-            MoveableRef.MoveAgainst(CurrentTarget.transform, MaxRange);
+            MoveableRef.MoveTo(CurrentTarget.transform, MaxRange);
         }
     }
 
-    void Attack() {
+    void Attack()
+    {
         if (ProjectilePrefab != null && Body != null)
         {
             GameObject projectile = Instantiate(ProjectilePrefab, Body.position, Body.rotation);
             projectile.GetComponent<AttackProjectile>().Configure(this, CurrentTarget, DamageType, DamageAmount);
         }
-        else {
+        else
+        {
             CurrentTarget.TakeDamage(this, DamageType, DamageAmount);
         }
+    }
+
+    bool IsEnemyFaction(Faction faction)
+    {
+        return Allegiance.GetEnemies(Faction).Contains(faction);
     }
 }

@@ -10,14 +10,16 @@ public class EnemySpawner : MonoBehaviour
     [Header("Map Parameters")]
     [SerializeField]
     private Renderer _spawnArea = null;
-    public Renderer SpawnArea {
+    public Renderer SpawnArea
+    {
         get => _spawnArea;
         set => _spawnArea = value;
     }
 
     [SerializeField]
     private float _borderOffset = 1f;
-    public float BorderOffset {
+    public float BorderOffset
+    {
         get => _borderOffset;
         set => _borderOffset = value;
     }
@@ -25,23 +27,42 @@ public class EnemySpawner : MonoBehaviour
     [Header("Wave Parameters")]
     [SerializeField]
     private List<GameObject> _availableEnemyPrefabs;
-    public List<GameObject> AvailableEnemyPrefabs {
+    public List<GameObject> AvailableEnemyPrefabs
+    {
         get => _availableEnemyPrefabs;
         set => _availableEnemyPrefabs = value;
     }
 
     [SerializeField]
     private int _initialEnemiesAmount = 4;
-    public int InitialEnemiesAmount {
+    public int InitialEnemiesAmount
+    {
         get => _initialEnemiesAmount;
         set => _initialEnemiesAmount = value;
     }
 
     [SerializeField]
     private int _enemyAmountIncrease = 2;
-    public int EnemyAmountIncrease {
+    public int EnemyAmountIncrease
+    {
         get => _enemyAmountIncrease;
         set => _enemyAmountIncrease = value;
+    }
+
+    [SerializeField]
+    private float _scalingHealthFactor = 0.10f;
+    public float ScalingHealthFactor
+    {
+        get => _scalingHealthFactor;
+        set => _scalingHealthFactor = value;
+    }
+
+    [SerializeField]
+    private float _scalingDamageFactor = 0.10f;
+    public float ScalingDamageFactor
+    {
+        get => _scalingDamageFactor;
+        set => _scalingDamageFactor = value;
     }
 
 
@@ -49,21 +70,24 @@ public class EnemySpawner : MonoBehaviour
     [Header("Current Wave Data")]
     [SerializeField, ReadOnly]
     private int _currentEnemiesAmount = 0;
-    public int CurrentEnemiesAmount {
+    public int CurrentEnemiesAmount
+    {
         get => _currentEnemiesAmount;
         private set => _currentEnemiesAmount = value;
     }
 
     [SerializeField, ReadOnly]
     private List<GameObject> _currentWaveEnemies;
-    public List<GameObject> CurrentWaveEnemies {
+    public List<GameObject> CurrentWaveEnemies
+    {
         get => _currentWaveEnemies;
         private set => _currentWaveEnemies = value;
     }
 
     [SerializeField, ReadOnly]
     private float _spawnInterval;
-    public float SpawnInterval {
+    public float SpawnInterval
+    {
         get => _spawnInterval;
         private set => _spawnInterval = value;
     }
@@ -87,7 +111,8 @@ public class EnemySpawner : MonoBehaviour
         RoundManager.Instance.RoundEnd += OnRoundEnd;
     }
 
-    void OnRoundStart(float roundDuration) {
+    void OnRoundStart(RoundManager roundManager, float roundDuration)
+    {
         CurrentWaveEnemies = new List<GameObject>();
 
         for (int i = 0; i < CurrentEnemiesAmount; i++)
@@ -97,12 +122,12 @@ public class EnemySpawner : MonoBehaviour
 
         SpawnInterval = roundDuration / CurrentWaveEnemies.Count;
 
-        StartCoroutine(SpawnEnemiesLoop());
+        StartCoroutine(SpawnEnemiesLoop(roundManager.CurrentRound));
     }
 
-    void OnRoundEnd()
+    void OnRoundEnd(RoundManager roundManager)
     {
-        if (RoundManager.Instance.CurrentRound == 0)
+        if (roundManager.CurrentRound == 0)
         {
             CurrentEnemiesAmount = InitialEnemiesAmount;
         }
@@ -112,22 +137,26 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnEnemiesLoop()
+    IEnumerator SpawnEnemiesLoop(int currentRound)
     {
         for (int i = 0; i < CurrentWaveEnemies.Count; i++)
         {
             if (RoundManager.Instance.IsGameover) yield break;
-            SpawnEnemy(i);
+            SpawnEnemy(i, currentRound);
             yield return new WaitForSeconds(SpawnInterval - Random.Range(0f, SpawnInterval * 0.5f));
         }
     }
 
-    void SpawnEnemy(int index) {
+    void SpawnEnemy(int index, int currentRound)
+    {
         Vector3 spawnPoint = GetRandomEdgePosition();
-        Instantiate(CurrentWaveEnemies[index], spawnPoint, Quaternion.identity);
+        GameObject newEnemy = Instantiate(CurrentWaveEnemies[index], spawnPoint, Quaternion.identity);
+        newEnemy.GetComponent<Attacker>().DamageAmount *= (1.0f + (ScalingDamageFactor * (currentRound - 1)));
+        newEnemy.GetComponent<Damageable>().MaxHealth *= (1.0f + (ScalingHealthFactor * (currentRound - 1)));
     }
 
-    Vector3 GetRandomEdgePosition() {
+    Vector3 GetRandomEdgePosition()
+    {
         Bounds bounds = SpawnArea.bounds;
         float x, z;
 
@@ -135,7 +164,8 @@ public class EnemySpawner : MonoBehaviour
         int edge = Random.Range(0, 4);
 
         //Assign a random x and z postion depending on the selected edge
-        switch (edge) {
+        switch (edge)
+        {
             case 0: //Top
                 x = Random.Range(bounds.min.x + BorderOffset, bounds.max.x - BorderOffset);
                 z = bounds.max.z - BorderOffset;

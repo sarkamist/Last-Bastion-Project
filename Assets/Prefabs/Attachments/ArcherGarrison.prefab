@@ -78,10 +78,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 0
   _currentTarget: {fileID: 0}
-  _acquisitionDelay: 0
   _moveableRef: {fileID: 0}
-  _maxRange: 30
-  _minRange: 10
+  _maxRange: 40
+  _minRange: 0
   _projectilePrefab: {fileID: 988590760138071255, guid: 47db1ef49fbe6a34d81f3a4186e57607, type: 3}
   _body: {fileID: 0}
   _attackSpeed: 1

@@ -1,67 +1,43 @@
-using System;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Moveable : MonoBehaviour
 {
     #region Properties
-    [SerializeField, ReadOnly]
-    [Header("Targeting")]
-    public Transform _currentWaypoint = null;
-    public Transform CurrentWaypoint {
-        get => _currentWaypoint;
-        private set => _currentWaypoint = value; }
-
     [Header("Movement Parameters")]
     [SerializeField, ReadOnly]
-    public bool _isMoving = false;
-    public bool IsMoving { 
-        get => _isMoving;
-        private set => _isMoving = value;
-    }
-
-    [SerializeField]
-    public float _movementSpeed = 20f;
-    public float MovementSpeed {
-        get => _movementSpeed;
-        set => _movementSpeed = value;
-    }
-
-    [SerializeField]
-    public float _stopDistance = 0f;
-    public float StopDistance
+    public NavMeshAgent _agent = null;
+    public NavMeshAgent Agent
     {
-        get => _stopDistance;
-        set => _stopDistance = value;
+        get => _agent;
+        private set => _agent = value;
     }
     #endregion
 
+    void Start()
+    {
+        Agent = GetComponent<NavMeshAgent>();
+    }
+
     void Update()
     {
-        if (IsMoving && CurrentWaypoint != null) {
-            Vector3 direction = CurrentWaypoint.position - transform.position;
-            transform.Translate(MovementSpeed * Time.deltaTime * direction.normalized, Space.World);
-
-            if (IsInStopDistance()) {
-                Stop();
-            }
+        if (RoundManager.Instance.IsGameover)
+        {
+            Stop();
         }
     }
 
-    public void MoveAgainst(Transform target, float stopAtDistance = 0f) {
-        CurrentWaypoint = target;
-        IsMoving = true;
-        StopDistance = stopAtDistance;
-    }
-
-    public void Stop() {
-        CurrentWaypoint = null;
-        IsMoving = false;
-    }
-
-    bool IsInStopDistance()
+    public void MoveTo(Transform target, float stoppingDistance = 0f)
     {
-        float distanceToTarget = Vector3.Distance(transform.position, CurrentWaypoint.position);
-        return (distanceToTarget <= StopDistance);
+        Agent.destination = target.position;
+        Agent.isStopped = false;
+        Agent.stoppingDistance = stoppingDistance;
+    }
+
+    public void Stop()
+    {
+        Agent.isStopped = true;
     }
 }

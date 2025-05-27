@@ -191,6 +191,7 @@ GameObject:
   - component: {fileID: 1714260555072134939}
   - component: {fileID: 634508766951926160}
   - component: {fileID: 6391418984333348025}
+  - component: {fileID: 801546276829786545}
   m_Layer: 0
   m_Name: RangedEnemy
   m_TagString: Untagged
@@ -229,7 +230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 2
   _body: {fileID: 0}
-  _maxHealth: 50
+  _maxHealth: 30
   _currentHealth: 0
 --- !u!114 &1714260555072134939
 MonoBehaviour:
@@ -243,10 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8094af997e815804aa11565d350a3d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentWaypoint: {fileID: 0}
-  _isMoving: 0
-  _movementSpeed: 20
-  _stopDistance: 0
+  _agent: {fileID: 0}
 --- !u!114 &634508766951926160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,7 +260,7 @@ MonoBehaviour:
   _faction: 2
   _currentTarget: {fileID: 0}
   _moveableRef: {fileID: 0}
-  _maxRange: 25
+  _maxRange: 40
   _minRange: 0
   _projectilePrefab: {fileID: 988590760138071255, guid: 306c0fb0fc40f0c409158bb1559cc3a4, type: 3}
   _body: {fileID: 0}
@@ -284,6 +282,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageableRef: {fileID: 0}
   _healthBarFill: {fileID: 8974059945661026427}
+--- !u!195 &801546276829786545
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787733664463486538}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 20
+  m_Acceleration: 30
+  avoidancePriority: 50
+  m_AngularSpeed: 270
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &3819403386605263066
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,6 +391,7 @@ GameObject:
   - component: {fileID: 7458385049475140247}
   - component: {fileID: 1246882481558932026}
   - component: {fileID: 6205160748299262197}
+  - component: {fileID: 4138842465583061215}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -469,3 +490,30 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &4138842465583061215
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7493590560368014805}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

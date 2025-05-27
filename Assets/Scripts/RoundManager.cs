@@ -20,7 +20,8 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField, ReadOnly]
     private bool _isGameover = false;
-    public bool IsGameover {
+    public bool IsGameover
+    {
         get => _isGameover;
         set => _isGameover = value;
     }
@@ -36,7 +37,8 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField]
     private float _roundMaxDuration = 30f;
-    public float RoundMaxDuration {
+    public float RoundMaxDuration
+    {
         get => _roundMaxDuration;
         set => _roundMaxDuration = value;
     }
@@ -51,8 +53,8 @@ public class RoundManager : MonoBehaviour
     #endregion
 
     #region Events
-    public event Action<float> RoundStart;
-    public event Action RoundEnd;
+    public event Action<RoundManager, float> RoundStart;
+    public event Action<RoundManager> RoundEnd;
     #endregion
 
     void Awake()
@@ -80,10 +82,10 @@ public class RoundManager : MonoBehaviour
             RoundRemainingDuration -= Time.deltaTime;
             if (RoundRemainingDuration <= 0)
             {
-                RoundEnd?.Invoke();
+                RoundEnd?.Invoke(this);
                 RoundRemainingDuration = RoundMaxDuration;
                 CurrentRound += 1;
-                RoundStart?.Invoke(RoundRemainingDuration);
+                RoundStart?.Invoke(this, RoundRemainingDuration);
             }
         }
     }

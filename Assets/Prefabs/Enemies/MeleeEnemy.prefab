@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 8048316594469991569}
   - component: {fileID: 8971734799076505812}
   - component: {fileID: 5887349340318929193}
-  m_Layer: 0
+  - component: {fileID: 6206835059815512829}
+  m_Layer: 7
   m_Name: MeleeEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 2
   _body: {fileID: 0}
-  _maxHealth: 50
+  _maxHealth: 100
   _currentHealth: 0
 --- !u!114 &8048316594469991569
 MonoBehaviour:
@@ -65,9 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8094af997e815804aa11565d350a3d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentWaypoint: {fileID: 0}
-  _isMoving: 0
-  _movementSpeed: 20
+  _agent: {fileID: 0}
 --- !u!114 &8971734799076505812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,15 +81,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 2
   _currentTarget: {fileID: 0}
+  _acquisitionDelay: 0
   _moveableRef: {fileID: 0}
-  _maxRange: 3
+  _maxRange: 5
   _minRange: 0
   _projectilePrefab: {fileID: 0}
   _body: {fileID: 0}
   _attackSpeed: 2
   _attackCooldown: 0
   _damageType: 1
-  _damageAmount: 10
+  _damageAmount: 1
 --- !u!114 &5887349340318929193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,6 +105,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageableRef: {fileID: 0}
   _healthBarFill: {fileID: 2120439434038194320}
+--- !u!195 &6206835059815512829
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478642413865597208}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 20
+  m_Acceleration: 30
+  avoidancePriority: 50
+  m_AngularSpeed: 270
+  m_StoppingDistance: 5
+  m_AutoTraverseOffMeshLink: 0
+  m_AutoBraking: 0
+  m_AutoRepath: 0
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 0
 --- !u!1 &979257251734166746
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,7 +290,7 @@ GameObject:
   - component: {fileID: 1437315188662715847}
   - component: {fileID: 2446966117624993736}
   - component: {fileID: 4852145011686982672}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

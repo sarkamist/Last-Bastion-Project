@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class HUDManager : MonoBehaviour
 {
+
+    public static HUDManager Instance { get; private set; }
+
     #region Properties
     [Header("HUD Elements")]
     [SerializeField, ReadOnly]
@@ -47,6 +50,18 @@ public class HUDManager : MonoBehaviour
     }
     #endregion
 
+    void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
         TXT_CurrentRound = transform.Find("TXT_CurrentRound").GetComponent<TextMeshProUGUI>();
@@ -61,7 +76,7 @@ public class HUDManager : MonoBehaviour
     {
         TXT_CurrentRound.text = $"Current Round: {RoundManager.Instance.CurrentRound} ({EnemySpawner.Instance.CurrentEnemiesAmount} enemies)";
         TXT_RemainingDuration.text = $"Remaining Duration: {RoundManager.Instance.RoundRemainingDuration:0.0}s";
-        TXT_BastionHealth.text = $"Bastion Health: {BastionRef.CurrentHealth}/{BastionRef.MaxHealth}";
+        TXT_BastionHealth.text = $"Health: {BastionRef.CurrentHealth:0}/{BastionRef.MaxHealth:0}";
 
         if (RoundManager.Instance.IsGameover)
         {
@@ -69,11 +84,12 @@ public class HUDManager : MonoBehaviour
         }
     }
 
-    public void ExitGame() {
-        #if UNITY_EDITOR
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-        #else
+#else
         Application.Quit();
-        #endif
+#endif
     }
 }

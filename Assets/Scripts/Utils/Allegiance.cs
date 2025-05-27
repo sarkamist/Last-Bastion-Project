@@ -11,14 +11,16 @@ public class Allegiance
         { Affinity.Enemy, Affinity.Enemy, Affinity.Self } //Monsters
     };
 
-    public static List<Faction> GetEnemies(Faction faction) {
-        int factionIndex = (int) faction;
+    public static List<Faction> GetEnemies(Faction faction)
+    {
+        int factionIndex = (int)faction;
         List<Faction> enemies = new List<Faction>();
 
         for (int i = 0; i < FactionStatus.GetLength(1); i++)
         {
-            if (FactionStatus[factionIndex, i] == Affinity.Enemy) {
-                enemies.Add((Faction) i);
+            if (FactionStatus[factionIndex, i] == Affinity.Enemy)
+            {
+                enemies.Add((Faction)i);
             }
         }
 

@@ -68,22 +68,26 @@ public class AttackProjectile : MonoBehaviour
             Vector3 direction = CurrentTarget.Body.position - transform.position;
             float distance = TravelSpeed * Time.deltaTime;
 
-            if (direction.magnitude <= distance) {
+            if (direction.magnitude <= distance)
+            {
                 HitTarget();
                 return;
             }
         }
-        else {
+        else
+        {
             Destroy(gameObject);
         }
     }
 
-    private void HitTarget() {
+    private void HitTarget()
+    {
         Destroy(gameObject);
         CurrentTarget.TakeDamage(AttackSource, DamageType, DamageAmount);
     }
 
-    public void Configure(Attacker attackSource, Damageable currentTarget, DamageType damageType, float damageAmount) {
+    public void Configure(Attacker attackSource, Damageable currentTarget, DamageType damageType, float damageAmount)
+    {
         this.AttackSource = attackSource;
         this.CurrentTarget = currentTarget;
         this.DamageType = damageType;
