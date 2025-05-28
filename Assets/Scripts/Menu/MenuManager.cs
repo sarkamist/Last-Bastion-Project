@@ -8,6 +8,16 @@ public class ScenesManager : MonoBehaviour
     public GameObject namePanel;
     public GameObject[] subPanels;
 
+    public KeyCode panelKey = KeyCode.Escape;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(panelKey))
+        {
+            namePanel.SetActive(!namePanel.activeSelf);
+        }
+    }
+
     public void OpenPanel()
     {
         namePanel.SetActive(true);
