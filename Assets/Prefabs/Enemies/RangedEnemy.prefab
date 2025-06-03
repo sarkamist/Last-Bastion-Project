@@ -245,6 +245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 0}
+  _currentTarget: {x: 0, y: 0, z: 0}
+  _isMoving: 0
 --- !u!114 &634508766951926160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 2
   _currentTarget: {fileID: 0}
+  _acquisitionDelay: 0
   _moveableRef: {fileID: 0}
   _maxRange: 40
   _minRange: 0
@@ -303,7 +306,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 1
   m_WalkableMask: 1
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 2
 --- !u!1 &3819403386605263066
 GameObject:
   m_ObjectHideFlags: 0

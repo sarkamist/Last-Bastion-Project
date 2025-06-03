@@ -124,7 +124,7 @@ public class Attacker : MonoBehaviour
 
     void Update()
     {
-        AcquisitionDelay -= Time.deltaTime;
+        if (AcquisitionDelay > 0) AcquisitionDelay -= Time.deltaTime;
         if (
             CurrentTarget == null || !IsInRange(CurrentTarget.transform)
             && AcquisitionDelay <= 0f
@@ -147,7 +147,7 @@ public class Attacker : MonoBehaviour
 
         if (damageables.Count > 0)
         {
-            AcquisitionDelay = 5f;
+            AcquisitionDelay = Random.Range(AttackCooldown, AttackCooldown * 1.5f);
             CurrentTarget = damageables[Random.Range(0, damageables.Count)];
         }
         else
@@ -180,7 +180,7 @@ public class Attacker : MonoBehaviour
         {
             if (MoveableRef != null && !MoveableRef.Agent.isStopped) MoveableRef.DisableMovement();
 
-            AttackCooldown -= Time.deltaTime;
+            if (AttackCooldown > 0f) AttackCooldown -= Time.deltaTime;
             if (AttackCooldown <= 0f)
             {
                 AttackCooldown = AttackSpeed;

@@ -638,14 +638,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnArea: {fileID: 1006168057}
   _borderOffset: 1
-  _availableEnemyPrefabs:
-  - {fileID: 478642413865597208, guid: cc3e575df2058744fa6a1986437aaadc, type: 3}
-  _initialEnemiesAmount: 8
-  _enemyAmountIncrease: 6
-  _scalingHealthFactor: 0.1
-  _scalingDamageFactor: 0.1
+  _availableEnemyProgressions:
+  - {fileID: 11400000, guid: 35010514672d1e445b5d00780f1f341b, type: 2}
+  - {fileID: 11400000, guid: 20076b097bd0fe143861b9635ce36321, type: 2}
+  _initialEnemiesAmount: 4
+  _enemyAmountIncrease: 2
   _currentEnemiesAmount: 0
-  _currentWaveEnemies: []
+  _currentWaveProgressions: []
   _spawnInterval: 0
 --- !u!114 &707363873
 MonoBehaviour:
@@ -662,7 +661,7 @@ MonoBehaviour:
   _bastionRef: {fileID: 1904416970}
   _isGameover: 0
   _currentRound: 0
-  _roundMaxDuration: 20
+  _roundMaxDuration: 10
   _roundRemainingDuration: 5
 --- !u!4 &707363874
 Transform:
@@ -2304,7 +2303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 0
   _body: {fileID: 0}
-  _maxHealth: 10000
+  _maxHealth: 1000000
   _currentHealth: 0
 --- !u!114 &1904416973
 MonoBehaviour:
