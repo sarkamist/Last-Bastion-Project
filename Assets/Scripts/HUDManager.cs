@@ -87,6 +87,7 @@ public class HUDManager : MonoBehaviour
         TXT_Gold = transform.Find("SEC_ShopPanel").Find("TXT_Gold").GetComponent<TextMeshProUGUI>();
         TXT_BastionHealth = transform.Find("TXT_BastionHealth").GetComponent<TextMeshProUGUI>();
         TXT_Defeat = transform.Find("TXT_Defeat").GetComponent<TextMeshProUGUI>();
+        TXT_Defeat.gameObject.SetActive(false);
         TXT_Defeat.enabled = false;
     }
 
@@ -100,6 +101,7 @@ public class HUDManager : MonoBehaviour
 
         if (RoundManager.Instance.IsGameover)
         {
+            TXT_Defeat.gameObject.SetActive(true);
             TXT_Defeat.enabled = true;
         }
     }

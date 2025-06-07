@@ -26,6 +26,11 @@ public class Allegiance
 
         return enemies;
     }
+
+    public static bool IsPlayerFaction(Faction faction)
+    {
+        return (faction == Faction.Bastion || faction == Faction.Defenders);
+    }
 }
 
 public enum Faction : int

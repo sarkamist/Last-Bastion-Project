@@ -134,7 +134,7 @@ public class EnemySpawner : MonoBehaviour
         {
             if (RoundManager.Instance.IsGameover) yield break;
             SpawnEnemy(i, currentRound);
-            yield return new WaitForSeconds(SpawnInterval - Random.Range(-(SpawnInterval * 0.15f), SpawnInterval * 0.15f));
+            yield return new WaitForSeconds(SpawnInterval - Random.Range(0f, SpawnInterval * 0.15f));
         }
     }
 

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 634508766951926160}
   - component: {fileID: 6327189680429737042}
   - component: {fileID: 801546276829786545}
+  - component: {fileID: -4180289861713447084}
   - component: {fileID: 4330462003490941189}
   m_Layer: 0
   m_Name: RangedEnemy
@@ -122,8 +123,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 20
-  m_Acceleration: 50
+  m_Speed: 15
+  m_Acceleration: 40
   avoidancePriority: 50
   m_AngularSpeed: 315
   m_StoppingDistance: 0
@@ -134,6 +135,20 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 2
+--- !u!114 &-4180289861713447084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787733664463486538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b09f90eaac72444f9ade03ab640b4e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageableRef: {fileID: 0}
+  _bountyAmount: 5
 --- !u!54 &4330462003490941189
 Rigidbody:
   m_ObjectHideFlags: 0

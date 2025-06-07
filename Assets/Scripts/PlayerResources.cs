@@ -52,13 +52,15 @@ public class PlayerResources : MonoBehaviour
 
     private void HandleIncome() {
         AccumulatedIncome += IncomeRatio;
-        Debug.Log(AccumulatedIncome);
 
+        //Provide only integer gold, let decimals accumulate
         int gainedGold = (int) Mathf.Floor(AccumulatedIncome);
-        Debug.Log(gainedGold);
         AccumulatedIncome -= gainedGold;
-        Debug.Log(AccumulatedIncome);
 
         CurrentGold += gainedGold;
+    }
+
+    public void IncreaseGold(int amount) {
+        CurrentGold += amount;
     }
 }

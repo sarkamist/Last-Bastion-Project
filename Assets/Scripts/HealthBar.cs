@@ -68,7 +68,6 @@ public class HealthBar : MonoBehaviour
             DamageableRef = null;
         }
 
-        Debug.Log(Camera.main);
         CameraRef = Camera.main;
 
         _targetFill = 1f;
