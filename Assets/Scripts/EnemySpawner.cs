@@ -120,12 +120,12 @@ public class EnemySpawner : MonoBehaviour
         if (roundManager.CurrentRound == 0)
         {
             CurrentWaveEnemiesAmount = InitialEnemiesAmount;
-            CurrentWaveEnemiesSpawned = 0;
         }
         else
         {
             CurrentWaveEnemiesAmount += EnemyAmountIncrease;
         }
+        CurrentWaveEnemiesSpawned = 0;
     }
 
     IEnumerator SpawnEnemiesLoop(int currentRound)
