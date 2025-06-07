@@ -23,16 +23,16 @@ public class Damageable : MonoBehaviour
 
     [Header("Health")]
     [SerializeField]
-    public float _maxHealth = 100f;
-    public float MaxHealth
+    public double _maxHealth = 100f;
+    public double MaxHealth
     {
         get => _maxHealth;
         set => _maxHealth = value;
     }
 
     [SerializeField, ReadOnly]
-    private float _currentHealth;
-    public float CurrentHealth {
+    private double _currentHealth;
+    public double CurrentHealth {
         get => _currentHealth;
         private set => _currentHealth = value;
     }
@@ -43,9 +43,9 @@ public class Damageable : MonoBehaviour
         public Damageable origin;
         public Attacker source;
         public DamageType damageType;
-        public float damageAmount;
+        public double damageAmount;
 
-        public DamageTakenContext(Damageable origin, Attacker source, DamageType damageType, float damageAmount)
+        public DamageTakenContext(Damageable origin, Attacker source, DamageType damageType, double damageAmount)
         {
             this.origin = origin;
             this.source = source;
@@ -77,7 +77,7 @@ public class Damageable : MonoBehaviour
         CurrentHealth = MaxHealth;
     }
 
-    public void TakeDamage(Attacker source, DamageType damageType, float damageAmount) {
+    public void TakeDamage(Attacker source, DamageType damageType, double damageAmount) {
         if (damageAmount >= CurrentHealth)
         {
             CurrentHealth = 0f;

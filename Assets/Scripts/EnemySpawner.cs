@@ -51,11 +51,19 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Current Wave Data")]
     [SerializeField, ReadOnly]
-    private int _currentEnemiesAmount = 0;
-    public int CurrentEnemiesAmount
+    private int _currentWaveEnemiesAmount = 0;
+    public int CurrentWaveEnemiesAmount
     {
-        get => _currentEnemiesAmount;
-        private set => _currentEnemiesAmount = value;
+        get => _currentWaveEnemiesAmount;
+        private set => _currentWaveEnemiesAmount = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private int _currentWaveEnemiesSpawned = 0;
+    public int CurrentWaveEnemiesSpawned
+    {
+        get => _currentWaveEnemiesSpawned;
+        private set => _currentWaveEnemiesSpawned = value;
     }
 
     [SerializeField, ReadOnly]
@@ -97,7 +105,7 @@ public class EnemySpawner : MonoBehaviour
     {
         CurrentWaveProgressions = new List<EnemyProgression>();
 
-        for (int i = 0; i < CurrentEnemiesAmount; i++)
+        for (int i = 0; i < CurrentWaveEnemiesAmount; i++)
         {
             CurrentWaveProgressions.Add(AvailableEnemyProgressions[Random.Range(0, AvailableEnemyProgressions.Count)]);
         }
@@ -111,11 +119,12 @@ public class EnemySpawner : MonoBehaviour
     {
         if (roundManager.CurrentRound == 0)
         {
-            CurrentEnemiesAmount = InitialEnemiesAmount;
+            CurrentWaveEnemiesAmount = InitialEnemiesAmount;
+            CurrentWaveEnemiesSpawned = 0;
         }
         else
         {
-            CurrentEnemiesAmount += EnemyAmountIncrease;
+            CurrentWaveEnemiesAmount += EnemyAmountIncrease;
         }
     }
 
@@ -125,13 +134,14 @@ public class EnemySpawner : MonoBehaviour
         {
             if (RoundManager.Instance.IsGameover) yield break;
             SpawnEnemy(i, currentRound);
-            yield return new WaitForSeconds(SpawnInterval - Random.Range(0f, SpawnInterval * 0.5f));
+            yield return new WaitForSeconds(SpawnInterval - Random.Range(-(SpawnInterval * 0.15f), SpawnInterval * 0.15f));
         }
     }
 
     void SpawnEnemy(int progressionIndex, int currentRound)
     {
         EnemyProgression progression = CurrentWaveProgressions[progressionIndex];
+        CurrentWaveEnemiesSpawned++;
 
         Vector3 spawnPoint = GetRandomEdgePosition();
         progression.InstantiateScaledEnemy(currentRound, spawnPoint, Quaternion.identity);

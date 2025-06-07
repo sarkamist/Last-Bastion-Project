@@ -100,8 +100,8 @@ public class Attacker : MonoBehaviour
     }
 
     [SerializeField]
-    private float _damageAmount = 10f;
-    public float DamageAmount
+    private double _damageAmount = 10f;
+    public double DamageAmount
     {
         get => _damageAmount;
         set => _damageAmount = value;

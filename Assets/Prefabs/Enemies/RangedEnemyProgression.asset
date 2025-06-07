@@ -13,29 +13,30 @@ MonoBehaviour:
   m_Name: RangedEnemyProgression
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 1787733664463486538, guid: af60343ee579f6445915a92c03b521fd, type: 3}
-  _damageProgressionChart:
-    m_keys: 030000000500000007000000090000000b0000000d0000000f000000110000001300000015000000
+  _progressionChart:
+    m_keys:
+    - round:2+
+    - round:3+
+    - round:4+
+    - round:5+
+    - round:6+
+    - round:7+
+    - round:8+
+    - round:9+
+    - round:11+
+    - round:13+
+    - round:15+
+    - round:17*
     m_values:
-    - 1.05
-    - 1.1
-    - 1.2
-    - 1.3
-    - 1.4
-    - 1.5
-    - 1.6
-    - 1.7
-    - 1.8
-    - 2
-  _healthProgressionChart:
-    m_keys: 030000000500000007000000090000000b0000000d0000000f000000110000001300000015000000
-    m_values:
-    - 1.15
-    - 1.3
-    - 1.45
-    - 1.6
-    - 1.75
-    - 1.9
-    - 2.05
-    - 2.2
-    - 2.35
-    - 2.5
+    - dmg:0.1
+    - hp:0.05
+    - dmg:0.1
+    - hp:0.05
+    - dmg:0.1
+    - hp:0.05
+    - dmg:0.1
+    - hp:0.05
+    - dmg:0.1|hp:0.05
+    - dmg:0.1|hp:0.05
+    - dmg:0.1|hp:0.05
+    - dmg:0.15|hp:0.1
