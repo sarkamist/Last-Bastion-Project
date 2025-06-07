@@ -6,6 +6,7 @@ using UnityEngine;
 public class RoundManager : MonoBehaviour
 {
     public static RoundManager Instance { get; private set; }
+    public AudioManagerSc audioManager;
 
     #region Properties
 
@@ -20,7 +21,8 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField, ReadOnly]
     private bool _isGameover = false;
-    public bool IsGameover {
+    public bool IsGameover
+    {
         get => _isGameover;
         set => _isGameover = value;
     }
@@ -36,7 +38,8 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField]
     private float _roundMaxDuration = 30f;
-    public float RoundMaxDuration {
+    public float RoundMaxDuration
+    {
         get => _roundMaxDuration;
         set => _roundMaxDuration = value;
     }
@@ -81,6 +84,7 @@ public class RoundManager : MonoBehaviour
             if (RoundRemainingDuration <= 0)
             {
                 RoundEnd?.Invoke();
+                audioManager.PlaySFX(audioManager.newWave);
                 RoundRemainingDuration = RoundMaxDuration;
                 CurrentRound += 1;
                 RoundStart?.Invoke(RoundRemainingDuration);
@@ -91,6 +95,7 @@ public class RoundManager : MonoBehaviour
     public void OnBastionDeath(Damageable.DamageableDeathContext context)
     {
         IsGameover = true;
+        audioManager.CambiarSonido();
         Debug.Log("DEFEAT!");
     }
 }
