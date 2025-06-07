@@ -857,8 +857,8 @@ MonoBehaviour:
   _borderOffset: 1
   _availableEnemyProgressions:
   - {fileID: 11400000, guid: 35010514672d1e445b5d00780f1f341b, type: 2}
-  - {fileID: 11400000, guid: 63f950e647c4c104baa769dbf1aacbe5, type: 2}
-  _initialEnemiesAmount: 6
+  - {fileID: 11400000, guid: 6cfa477af62e6c04093b58def6b82947, type: 2}
+  _initialEnemiesAmount: 2
   _enemyAmountIncrease: 2
   _currentWaveEnemiesAmount: 0
   _currentWaveEnemiesSpawned: 0
@@ -879,7 +879,7 @@ MonoBehaviour:
   _bastionRef: {fileID: 1904416970}
   _isGameover: 0
   _currentRound: 0
-  _roundMaxDuration: 30
+  _roundMaxDuration: 5
   _roundRemainingDuration: 5
 --- !u!4 &707363874
 Transform:
@@ -2495,7 +2495,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 0
   _body: {fileID: 0}
-  _maxHealth: 1000
+  _maxHealth: 100000
   _currentHealth: 0
 --- !u!114 &1904416974
 MonoBehaviour:

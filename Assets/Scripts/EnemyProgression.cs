@@ -45,6 +45,14 @@ public class EnemyProgression : ScriptableObject
                 hpIncreaseMod = double.Parse(hpMatch.Groups[2].Value, System.Globalization.CultureInfo.InvariantCulture);
             }
 
+            //Process bounty modifiers definition
+            int? bountyIncreaseMod = null;
+            Match bountyMatch = Regex.Match(pair.Value, @"(bnt):(\d+)", RegexOptions.IgnoreCase);
+            if (bountyMatch.Success)
+            {
+                bountyIncreaseMod = int.Parse(bountyMatch.Groups[2].Value);
+            }
+
             //Process round definition
             foreach (Match match in Regex.Matches(pair.Key, @"(round):(\d+[\+\*]{0,1})", RegexOptions.IgnoreCase))
             {
@@ -58,13 +66,17 @@ public class EnemyProgression : ScriptableObject
 
                 if (applyInstances > 0)
                 {
-                    if (dmgIncreaseMod.HasValue)
+                    if (dmgIncreaseMod.HasValue && newEnemy.GetComponent<Attacker>() != null)
                     {
                         newEnemy.GetComponent<Attacker>().DamageAmount *= (1 + (dmgIncreaseMod.Value * applyInstances));
                     }
-                    if (hpIncreaseMod.HasValue)
+                    if (hpIncreaseMod.HasValue && newEnemy.GetComponent<Damageable>() != null)
                     {
                         newEnemy.GetComponent<Damageable>().MaxHealth *= (1 + (hpIncreaseMod.Value * applyInstances));
+                    }
+                    if (bountyIncreaseMod.HasValue && newEnemy.GetComponent<Bounty>() != null)
+                    {
+                        newEnemy.GetComponent<Bounty>().BountyAmount += (bountyIncreaseMod.Value * applyInstances);
                     }
                 }
             }

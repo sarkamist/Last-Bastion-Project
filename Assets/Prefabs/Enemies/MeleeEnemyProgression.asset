@@ -25,18 +25,20 @@ MonoBehaviour:
     - round:9+
     - round:11+
     - round:13+
+    - round:14+
     - round:15+
     - round:17*
     m_values:
     - dmg:0.05
     - hp:0.1
-    - dmg:0.05
+    - dmg:0.05|bnt:5
     - hp:0.1
     - dmg:0.05
     - hp:0.1
-    - dmg:0.05
+    - dmg:0.05|bnt:5
     - hp:0.1
     - dmg:0.05|hp:0.1
     - dmg:0.05|hp:0.1
+    - bnt:5
     - dmg:0.05|hp:0.1
-    - dmg:0.1|hp:0.15
+    - dmg:0.1|hp:0.15|bnt:10
