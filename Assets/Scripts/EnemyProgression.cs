@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -30,19 +29,19 @@ public class EnemyProgression : ScriptableObject
         foreach (KeyValuePair<string, string> pair in progressionChart)
         {
             //Process damage modifiers definition
-            double? dmgIncreaseMod = null;
+            float? dmgIncreaseMod = null;
             Match dmgMatch = Regex.Match(pair.Value, @"(dmg):([.?\d]+)", RegexOptions.IgnoreCase);
             if (dmgMatch.Success)
             {
-                dmgIncreaseMod = double.Parse(dmgMatch.Groups[2].Value, System.Globalization.CultureInfo.InvariantCulture);
+                dmgIncreaseMod = float.Parse(dmgMatch.Groups[2].Value, System.Globalization.CultureInfo.InvariantCulture);
             }
 
             //Process health modifiers definition
-            double? hpIncreaseMod = null;
+            float? hpIncreaseMod = null;
             Match hpMatch = Regex.Match(pair.Value, @"(hp):([.?\d]+)", RegexOptions.IgnoreCase);
             if (hpMatch.Success)
             {
-                hpIncreaseMod = double.Parse(hpMatch.Groups[2].Value, System.Globalization.CultureInfo.InvariantCulture);
+                hpIncreaseMod = float.Parse(hpMatch.Groups[2].Value, System.Globalization.CultureInfo.InvariantCulture);
             }
 
             //Process bounty modifiers definition
@@ -82,8 +81,8 @@ public class EnemyProgression : ScriptableObject
             }
         }
 
-        newEnemy.GetComponent<Attacker>().DamageAmount = Math.Ceiling(newEnemy.GetComponent<Attacker>().DamageAmount);
-        newEnemy.GetComponent<Damageable>().MaxHealth = Math.Ceiling(newEnemy.GetComponent<Damageable>().MaxHealth);
+        newEnemy.GetComponent<Attacker>().DamageAmount = Mathf.Ceil(newEnemy.GetComponent<Attacker>().DamageAmount);
+        newEnemy.GetComponent<Damageable>().MaxHealth = Mathf.Ceil(newEnemy.GetComponent<Damageable>().MaxHealth);
         //Debug.Log($"enemyProgression: [dmg:{newEnemy.GetComponent<Attacker>().DamageAmount}, hp:{newEnemy.GetComponent<Damageable>().MaxHealth}]");
     }
 }

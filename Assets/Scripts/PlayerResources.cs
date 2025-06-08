@@ -6,7 +6,7 @@ public class PlayerResources : MonoBehaviour
     public static PlayerResources Instance { get; private set; }
 
     #region Properties
-    [Header("Gold")]
+    [Header("Gold Parameters")]
     [SerializeField]
     private int _currentGold = 500;
     public int CurrentGold
@@ -15,7 +15,7 @@ public class PlayerResources : MonoBehaviour
         set => _currentGold = value;
     }
 
-    [Header("Income")]
+    [Header("Income Parameters")]
     [SerializeField]
     private float _incomeRatio = 2.5f;
     public float IncomeRatio
@@ -47,7 +47,7 @@ public class PlayerResources : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating(nameof(HandleIncome), 0f, 1f);
+        RoundManager.Instance.RoundStartEvent += OnFirstRoundStart;
     }
 
     private void HandleIncome() {
@@ -62,5 +62,27 @@ public class PlayerResources : MonoBehaviour
 
     public void IncreaseGold(int amount) {
         CurrentGold += amount;
+    }
+
+    public bool DecreaseGold(int amount)
+    {
+        if (amount <= CurrentGold) {
+            CurrentGold -= amount;
+            return true;
+        }
+        else
+        {
+            HUDManager.Instance.ShowWarning("Not enough gold available!", 2.5f);
+            return false;
+        }
+    }
+
+    void OnFirstRoundStart(RoundManager roundManager, float roundDuration)
+    {
+        if (roundManager.CurrentRound == 1)
+        {
+            InvokeRepeating(nameof(HandleIncome), 0f, 1f);
+            RoundManager.Instance.RoundStartEvent -= OnFirstRoundStart;
+        }
     }
 }

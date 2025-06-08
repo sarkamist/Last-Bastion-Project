@@ -23,16 +23,16 @@ public class Damageable : MonoBehaviour
 
     [Header("Health")]
     [SerializeField]
-    public double _maxHealth = 100f;
-    public double MaxHealth
+    public float _maxHealth = 100f;
+    public float MaxHealth
     {
         get => _maxHealth;
         set => _maxHealth = value;
     }
 
     [SerializeField, ReadOnly]
-    private double _currentHealth;
-    public double CurrentHealth {
+    private float _currentHealth;
+    public float CurrentHealth {
         get => _currentHealth;
         private set => _currentHealth = value;
     }
@@ -52,9 +52,9 @@ public class Damageable : MonoBehaviour
         public Damageable origin;
         public Attacker source;
         public DamageType damageType;
-        public double damageAmount;
+        public float damageAmount;
 
-        public DamageTakenContext(Damageable origin, Attacker source, DamageType damageType, double damageAmount)
+        public DamageTakenContext(Damageable origin, Attacker source, DamageType damageType, float damageAmount)
         {
             this.cancel = false;
             this.origin = origin;
@@ -73,9 +73,9 @@ public class Damageable : MonoBehaviour
         public bool cancel;
         public Damageable origin;
         public GameObject source;
-        public double healthAmount;
+        public float healthAmount;
 
-        public HealthGainContext(Damageable origin, GameObject source, double healthAmount)
+        public HealthGainContext(Damageable origin, GameObject source, float healthAmount)
         {
             this.cancel = false;
             this.origin = origin;
@@ -112,7 +112,7 @@ public class Damageable : MonoBehaviour
         CurrentHealth = MaxHealth;
     }
 
-    public void TakeDamage(Attacker source, DamageType damageType, double damageAmount) {
+    public void TakeDamage(Attacker source, DamageType damageType, float damageAmount) {
         DamageTakenContext context = new DamageTakenContext(this, source, damageType, damageAmount);
 
         //We allow delegate subscribers to modify the context and pass it to the next subscriber
@@ -136,7 +136,7 @@ public class Damageable : MonoBehaviour
         DamageTakenEvent?.Invoke(context);
     }
 
-    public void GainHealth(GameObject source, double healthAmount)
+    public void GainHealth(GameObject source, float healthAmount)
     {
         HealthGainContext context = new HealthGainContext(this, source, healthAmount);
 
@@ -148,7 +148,7 @@ public class Damageable : MonoBehaviour
 
         if (context.cancel) return;
 
-        if (context.healthAmount > 0f) CurrentHealth = Math.Min(MaxHealth, CurrentHealth + context.healthAmount);
+        if (context.healthAmount > 0f) CurrentHealth = Mathf.Min(MaxHealth, CurrentHealth + context.healthAmount);
     }
 
     void Death(Attacker source) {

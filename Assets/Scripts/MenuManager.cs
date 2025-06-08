@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using static CameraControlActions;
 
 public class MenuManager : MonoBehaviour
 {
@@ -29,7 +28,7 @@ public class MenuManager : MonoBehaviour
 
     private void OpenCloseAction(InputAction.CallbackContext context)
     {
-
+        Debug.Log("xax");
     }
 
     public void ExitGame()

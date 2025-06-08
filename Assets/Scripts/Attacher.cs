@@ -33,6 +33,7 @@ public class Attacher : MonoBehaviour
 
     public void AddAttachment(Attacheable attachment) {
         attachment.gameObject.transform.parent = AttachmentsPoint;
+        attachment.gameObject.transform.position = AttachmentsPoint.position;
         attachment.AttachTo(this);
         AttachmentsList.Add(attachment);
     }

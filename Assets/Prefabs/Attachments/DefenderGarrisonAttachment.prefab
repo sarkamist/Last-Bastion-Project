@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1878246047434788328
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9127289931092304577}
+  - component: {fileID: 7222425196535347857}
+  m_Layer: 7
+  m_Name: DefenderGarrisonAttachment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9127289931092304577
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878246047434788328}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7222425196535347857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878246047434788328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1780e75a632ab194c8f5dd2ab5c726b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attacher: {fileID: 0}
+  _displayName: <color=#1eff00>Defender Garrison</color>
+  _goldCost: 200
+  _tooltipDescription:
+  - <align="center"><color=#1eff00>Defender Garrison</color></align>
+  - <color="white">Defenders come out of the Bastion to attack your foes directly.
+    Mantains a Defender with <color="green">50 maximum health</color> and <color="red">10
+    physical</color> damage every 2 seconds.</color>
+  - <color="white">Once killed, another Defender will spawn after 20 seconds.</color>
+  _defenderPrefab: {fileID: 478642413865597208, guid: 2c467c9d894f8c740be495b928555e4a, type: 3}
+  _currentDefender: {fileID: 0}
+  _spawnCooldown: 20
+  _spawnTimer: 0

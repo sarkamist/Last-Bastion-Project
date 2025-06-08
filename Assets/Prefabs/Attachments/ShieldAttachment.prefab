@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 7705932515688792596}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -63,6 +63,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attacher: {fileID: 0}
+  _displayName: <color=#1EFF00>Barrier Arcanist</color>
+  _goldCost: 150
+  _tooltipDescription:
+  - <align="center"><color=#1EFF00>Barrier Arcanist</color></align>
+  - <color="white">Barrier arcanists create temporary shields that absorb damage
+    for the Bastion. Has <color="green">100 maximum health</color> and regenerates
+    <color="green">1 HP</color> every second.</color>
+  - <color="white">Once depleted, it needs 10 seconds before absorbing damage again.</color>
   _damageableRef: {fileID: 0}
   _regenerationRate: 1
   _shieldCooldown: 10

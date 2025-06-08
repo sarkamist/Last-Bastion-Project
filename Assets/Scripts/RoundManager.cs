@@ -43,7 +43,7 @@ public class RoundManager : MonoBehaviour
         set => _roundMaxDuration = value;
     }
 
-    [SerializeField, ReadOnly]
+    [SerializeField]
     private float _roundRemainingDuration = 5f;
     public float RoundRemainingDuration
     {
@@ -108,6 +108,5 @@ public class RoundManager : MonoBehaviour
     public void OnBastionDeath(Damageable.DamageableDeathContext context)
     {
         IsGameover = true;
-        Debug.Log("DEFEAT!");
     }
 }

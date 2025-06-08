@@ -47,8 +47,8 @@ public class AttackProjectile : MonoBehaviour
     }
 
     [SerializeField]
-    private double _damageAmount;
-    public double DamageAmount
+    private float _damageAmount;
+    public float DamageAmount
     {
         get => _damageAmount;
         set => _damageAmount = value;
@@ -86,7 +86,7 @@ public class AttackProjectile : MonoBehaviour
         CurrentTarget.TakeDamage(AttackSource, DamageType, DamageAmount);
     }
 
-    public void Configure(Attacker attackSource, Damageable currentTarget, DamageType damageType, double damageAmount)
+    public void Configure(Attacker attackSource, Damageable currentTarget, DamageType damageType, float damageAmount)
     {
         this.AttackSource = attackSource;
         this.CurrentTarget = currentTarget;

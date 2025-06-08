@@ -13,8 +13,8 @@ public class ShieldAttacheable : Attacheable
     }
 
     [SerializeField]
-    private double _regenerationRate = 1f;
-    public double RegenerationRate
+    private float _regenerationRate = 1f;
+    public float RegenerationRate
     {
         get => _regenerationRate;
         private set => _regenerationRate = value;
