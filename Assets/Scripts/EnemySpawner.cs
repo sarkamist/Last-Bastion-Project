@@ -97,8 +97,8 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
-        RoundManager.Instance.RoundStart += OnRoundStart;
-        RoundManager.Instance.RoundEnd += OnRoundEnd;
+        RoundManager.Instance.RoundStartEvent += OnRoundStart;
+        RoundManager.Instance.RoundEndEvent += OnRoundEnd;
     }
 
     void OnRoundStart(RoundManager roundManager, float roundDuration)

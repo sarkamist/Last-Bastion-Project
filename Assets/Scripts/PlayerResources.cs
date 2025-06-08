@@ -47,7 +47,7 @@ public class PlayerResources : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("HandleIncome", 0f, 1f);
+        InvokeRepeating(nameof(HandleIncome), 0f, 1f);
     }
 
     private void HandleIncome() {

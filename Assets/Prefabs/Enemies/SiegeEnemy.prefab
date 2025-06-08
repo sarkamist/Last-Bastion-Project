@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -4180289861713447084}
   - component: {fileID: 4330462003490941189}
   m_Layer: 0
-  m_Name: RangedEnemy
+  m_Name: SiegeEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6651717665474415107}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 3
   _body: {fileID: 0}
-  _maxHealth: 35
+  _maxHealth: 100
   _currentHealth: 0
   _canDie: 1
 --- !u!114 &1714260555072134939
@@ -88,14 +88,14 @@ MonoBehaviour:
   _currentTarget: {fileID: 0}
   _acquisitionDelay: 0
   _moveableRef: {fileID: 0}
-  _maxRange: 30
+  _maxRange: 45
   _minRange: 0
-  _projectilePrefab: {fileID: 988590760138071255, guid: 306c0fb0fc40f0c409158bb1559cc3a4, type: 3}
+  _projectilePrefab: {fileID: 988590760138071255, guid: 0c32b727aea1f8748b299e211bb651d5, type: 3}
   _body: {fileID: 0}
-  _attackSpeed: 2
+  _attackSpeed: 8
   _attackCooldown: 0
-  _damageType: 2
-  _damageAmount: 5
+  _damageType: 1
+  _damageAmount: 25
 --- !u!114 &6327189680429737042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,11 +123,11 @@ NavMeshAgent:
   m_GameObject: {fileID: 1787733664463486538}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 15
-  m_Acceleration: 40
+  m_Radius: 1
+  m_Speed: 5
+  m_Acceleration: 20
   avoidancePriority: 50
-  m_AngularSpeed: 315
+  m_AngularSpeed: 270
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1

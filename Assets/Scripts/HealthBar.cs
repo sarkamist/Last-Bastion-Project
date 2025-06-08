@@ -61,7 +61,7 @@ public class HealthBar : MonoBehaviour
         if (damageable != null)
         {
             DamageableRef = damageable;
-            DamageableRef.DamageTaken += OnDamageTaken;
+            DamageableRef.DamageTakenEvent += OnDamageTaken;
         }
         else
         {
@@ -82,5 +82,6 @@ public class HealthBar : MonoBehaviour
         if (HealthBarForeground == null) return;
 
         TargetFill = (float) (context.origin.CurrentHealth / context.origin.MaxHealth);
+        Debug.Log($"HealthBar damage taken {TargetFill:0.00}");
     }
 }

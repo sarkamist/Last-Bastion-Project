@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
 
 public class Attacher : MonoBehaviour
@@ -15,8 +14,8 @@ public class Attacher : MonoBehaviour
     }
 
     [SerializeField, ReadOnly]
-    private List<GameObject> _attachmentsList;
-    public List<GameObject> AttachmentsList
+    private List<Attacheable> _attachmentsList;
+    public List<Attacheable> AttachmentsList
     {
         get => _attachmentsList;
         private set => _attachmentsList = value;
@@ -32,8 +31,9 @@ public class Attacher : MonoBehaviour
     {
     }
 
-    void AddAttachment(GameObject attachment) {
-        attachment.transform.parent = AttachmentsPoint;
+    public void AddAttachment(Attacheable attachment) {
+        attachment.gameObject.transform.parent = AttachmentsPoint;
+        attachment.AttachTo(this);
         AttachmentsList.Add(attachment);
     }
 }

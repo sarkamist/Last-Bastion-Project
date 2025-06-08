@@ -50,11 +50,19 @@ public class RoundManager : MonoBehaviour
         get => _roundRemainingDuration;
         set => _roundRemainingDuration = value;
     }
+
+    [SerializeField, ReadOnly]
+    private bool _isRoundEnded = false;
+    public bool IsRoundEnded
+    {
+        get => _isRoundEnded;
+        set => _isRoundEnded = value;
+    }
     #endregion
 
     #region Events
-    public event Action<RoundManager, float> RoundStart;
-    public event Action<RoundManager> RoundEnd;
+    public event Action<RoundManager, float> RoundStartEvent;
+    public event Action<RoundManager> RoundEndEvent;
     #endregion
 
     void Awake()
@@ -72,20 +80,27 @@ public class RoundManager : MonoBehaviour
     void Start()
     {
         CurrentRound = 0;
-        BastionRef.GetComponent<Damageable>().DamageableDeath += OnBastionDeath;
+        BastionRef.GetComponent<Damageable>().DamageableDeathEvent += OnBastionDeath;
     }
 
     private void Update()
     {
         if (!IsGameover)
         {
-            RoundRemainingDuration -= Time.deltaTime;
+            if (IsRoundEnded)
+            {
+                CurrentRound += 1;
+                RoundRemainingDuration = RoundMaxDuration;
+                RoundStartEvent?.Invoke(this, RoundRemainingDuration);
+                IsRoundEnded = false;
+            }
+
+            if (RoundRemainingDuration > 0f) RoundRemainingDuration -= Time.deltaTime;
+
             if (RoundRemainingDuration <= 0)
             {
-                RoundEnd?.Invoke(this);
-                RoundRemainingDuration = RoundMaxDuration;
-                CurrentRound += 1;
-                RoundStart?.Invoke(this, RoundRemainingDuration);
+                RoundEndEvent?.Invoke(this);
+                IsRoundEnded = true;
             }
         }
     }

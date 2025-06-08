@@ -27,7 +27,7 @@ public class Bounty : MonoBehaviour
         if (damageable != null)
         {
             DamageableRef = damageable;
-            DamageableRef.DamageableDeath += OnDamageableDeath;
+            DamageableRef.DamageableDeathEvent += OnDamageableDeath;
         }
         else
         {

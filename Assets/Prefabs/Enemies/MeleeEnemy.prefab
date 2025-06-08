@@ -52,10 +52,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82e04aa590be89a439ac590f28e5e780, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _faction: 2
+  _faction: 3
   _body: {fileID: 0}
   _maxHealth: 100
   _currentHealth: 0
+  _canDie: 1
 --- !u!114 &8048316594469991569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,7 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a8f69a8e4aef148895ff3c065795a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _faction: 2
+  _faction: 3
   _currentTarget: {fileID: 0}
   _acquisitionDelay: 0
   _moveableRef: {fileID: 0}
@@ -148,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageableRef: {fileID: 0}
+  _bountyAmount: 5
 --- !u!54 &2054590012669189650
 Rigidbody:
   m_ObjectHideFlags: 0

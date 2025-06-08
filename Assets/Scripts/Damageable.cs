@@ -36,10 +36,19 @@ public class Damageable : MonoBehaviour
         get => _currentHealth;
         private set => _currentHealth = value;
     }
+
+    [SerializeField]
+    private bool _canDie = true;
+    public bool CanDie
+    {
+        get => _canDie;
+        private set => _canDie = value;
+    }
     #endregion
 
     #region Events
     public struct DamageTakenContext {
+        public bool cancel;
         public Damageable origin;
         public Attacker source;
         public DamageType damageType;
@@ -47,6 +56,7 @@ public class Damageable : MonoBehaviour
 
         public DamageTakenContext(Damageable origin, Attacker source, DamageType damageType, double damageAmount)
         {
+            this.cancel = false;
             this.origin = origin;
             this.source = source;
             this.damageType = damageType;
@@ -54,7 +64,28 @@ public class Damageable : MonoBehaviour
         }
     }
 
-    public event Action<DamageTakenContext> DamageTaken;
+    public delegate DamageTakenContext PreDamageTakenHandler(DamageTakenContext context);
+    public event PreDamageTakenHandler PreDamageTakenEvent;
+    public event Action<DamageTakenContext> DamageTakenEvent;
+
+    public struct HealthGainContext
+    {
+        public bool cancel;
+        public Damageable origin;
+        public GameObject source;
+        public double healthAmount;
+
+        public HealthGainContext(Damageable origin, GameObject source, double healthAmount)
+        {
+            this.cancel = false;
+            this.origin = origin;
+            this.source = source;
+            this.healthAmount = healthAmount;
+        }
+    }
+
+    public delegate HealthGainContext HealthGainHandler(HealthGainContext context);
+    public event HealthGainHandler HealthGainEvent;
 
     public struct DamageableDeathContext
     {
@@ -68,31 +99,62 @@ public class Damageable : MonoBehaviour
         }
     }
 
-    public event Action<DamageableDeathContext> DamageableDeath;
+    public event Action<DamageableDeathContext> DamageableDeathEvent;
     #endregion
 
     void Start()
     {
-        Body = transform.Find("Body");
+        if (Body == null)
+        {
+            Body = transform.Find("Body");
+        }
+        
         CurrentHealth = MaxHealth;
     }
 
     public void TakeDamage(Attacker source, DamageType damageType, double damageAmount) {
-        if (damageAmount >= CurrentHealth)
+        DamageTakenContext context = new DamageTakenContext(this, source, damageType, damageAmount);
+
+        //We allow delegate subscribers to modify the context and pass it to the next subscriber
+        if (PreDamageTakenEvent != null) foreach (Delegate d in PreDamageTakenEvent.GetInvocationList())
+        {
+                context = (DamageTakenContext) d.DynamicInvoke(context);
+        }
+
+        if (context.cancel) return;
+
+        if (context.damageAmount >= CurrentHealth)
         {
             CurrentHealth = 0f;
             Death(source);
         }
         else
         {
-            CurrentHealth -= damageAmount;
+            CurrentHealth -= context.damageAmount;
         }
 
-        DamageTaken?.Invoke(new DamageTakenContext(this, source, damageType, damageAmount));
+        DamageTakenEvent?.Invoke(context);
+    }
+
+    public void GainHealth(GameObject source, double healthAmount)
+    {
+        HealthGainContext context = new HealthGainContext(this, source, healthAmount);
+
+        //We allow delegate subscribers to modify the context and pass it to the next subscriber
+        if (HealthGainEvent != null) foreach (Delegate d in HealthGainEvent.GetInvocationList())
+            {
+                context = (HealthGainContext) d.DynamicInvoke(context);
+            }
+
+        if (context.cancel) return;
+
+        if (context.healthAmount > 0f) CurrentHealth = Math.Min(MaxHealth, CurrentHealth + context.healthAmount);
     }
 
     void Death(Attacker source) {
-        DamageableDeath?.Invoke(new DamageableDeathContext(this, source));
-        Destroy(gameObject);
+        DamageableDeathContext context = new DamageableDeathContext(this, source);
+
+        DamageableDeathEvent?.Invoke(context);
+        if (CanDie) Destroy(gameObject);
     }
 }

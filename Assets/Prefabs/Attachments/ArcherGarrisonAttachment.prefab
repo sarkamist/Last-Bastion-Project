@@ -41,8 +41,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8217148462843693038}
   - component: {fileID: 2146665251563652580}
+  - component: {fileID: 8774546231708559954}
   m_Layer: 0
-  m_Name: ArcherGarrison
+  m_Name: ArcherGarrisonAttachment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,8 +79,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 0
   _currentTarget: {fileID: 0}
+  _acquisitionDelay: 0
   _moveableRef: {fileID: 0}
-  _maxRange: 40
+  _maxRange: 50
   _minRange: 0
   _projectilePrefab: {fileID: 988590760138071255, guid: 47db1ef49fbe6a34d81f3a4186e57607, type: 3}
   _body: {fileID: 0}
@@ -87,3 +89,16 @@ MonoBehaviour:
   _attackCooldown: 0
   _damageType: 1
   _damageAmount: 15
+--- !u!114 &8774546231708559954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135206015969058455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f997158fc967144ea6ad92a0a031786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attacher: {fileID: 0}
