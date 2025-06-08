@@ -21,7 +21,7 @@ public class MenuManager : MonoBehaviour
         MenuActions.Menu.OpenClose.performed += OpenCloseAction;
     }
 
-    private void LoadScene(string sceneName)
+    public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
