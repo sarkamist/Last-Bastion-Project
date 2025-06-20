@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7705932515688792596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1285176487624044754}
+  - component: {fileID: 4600564360359008996}
+  - component: {fileID: 1046556526833990143}
+  m_Layer: 0
+  m_Name: ShieldAttachment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1285176487624044754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7705932515688792596}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4600564360359008996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7705932515688792596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82e04aa590be89a439ac590f28e5e780, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _faction: 2
+  _body: {fileID: 0}
+  _maxHealth: 100
+  _currentHealth: 0
+  _regenerationRate: 1
+  _canDie: 0
+--- !u!114 &1046556526833990143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7705932515688792596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53e3d0f9f1a753489033276f306b5e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displayName: <color=#1EFF00>Barrier Arcanist</color>
+  _goldCost: 175
+  _tooltipDescription:
+  - <align="center"><color=#1EFF00>Barrier Arcanist</color></align>
+  - <color="white">Barrier arcanists create temporary shields that absorb damage
+    for the Bastion. Has <color="green">100 maximum health</color> and regenerates
+    <color="green">1 HP</color> every second.</color>
+  - <color="white">Once depleted, it needs 10 seconds before absorbing damage again.</color>
+  _attacher: {fileID: 0}
+  _damageableRef: {fileID: 0}
+  _shieldCooldown: 10
+  _shieldRemainingCooldown: 0

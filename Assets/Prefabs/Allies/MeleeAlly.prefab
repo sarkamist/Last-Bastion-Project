@@ -94,8 +94,9 @@ MonoBehaviour:
   _body: {fileID: 0}
   _attackSpeed: 2
   _attackCooldown: 0
-  _damageType: 1
-  _damageAmount: 10
+  _damageData:
+    amount: 10
+    type: 1
 --- !u!114 &4127491480876160647
 MonoBehaviour:
   m_ObjectHideFlags: 0

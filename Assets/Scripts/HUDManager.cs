@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,6 +41,14 @@ public class HUDManager : MonoBehaviour
     {
         get => _txt_Gold;
         private set => _txt_Gold = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private TextMeshProUGUI _txt_Bounty;
+    public TextMeshProUGUI TXT_Bounty
+    {
+        get => _txt_Bounty;
+        private set => _txt_Bounty = value;
     }
 
     [SerializeField, ReadOnly]
@@ -122,15 +132,13 @@ public class HUDManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
 
-    void Start()
-    {
         //Resources Panel
         TXT_CurrentRound = transform.Find("SEC_ResourcePanel").Find("TXT_CurrentRound").GetComponent<TextMeshProUGUI>();
         IMG_RoundTimerForeground = transform.Find("SEC_ResourcePanel").Find("IMG_RoundTimerBackground").Find("IMG_RoundTimerForeground").GetComponent<Image>();
         TXT_RoundTimer = transform.Find("SEC_ResourcePanel").Find("IMG_RoundTimerBackground").Find("TXT_RoundTimer").GetComponent<TextMeshProUGUI>();
         TXT_Gold = transform.Find("SEC_ResourcePanel").Find("TXT_Gold").GetComponent<TextMeshProUGUI>();
+        TXT_Bounty = transform.Find("SEC_ResourcePanel").Find("TXT_Bounty").GetComponent<TextMeshProUGUI>();
         TXT_BastionHealth = transform.Find("TXT_BastionHealth").GetComponent<TextMeshProUGUI>();
         TXT_Defeat = transform.Find("TXT_Defeat").GetComponent<TextMeshProUGUI>();
         TXT_Defeat.gameObject.SetActive(false);
@@ -142,23 +150,34 @@ public class HUDManager : MonoBehaviour
 
         //Shop Panel
         TXT_RefreshShop = transform.Find("SEC_ShopPanel").Find("BTN_RefreshShop").Find("Text").GetComponent<TextMeshProUGUI>();
-        TXT_RefreshShop.text = $"Refresh ({ShopManager.Instance.RefreshCost}g)";
+        TXT_RefreshShop.text = $"Refresh (<color=#FCC200>{ShopManager.Instance.RefreshCost}g</color>)";
+    }
 
+    void Start()
+    {
         ShowWarning("Get ready, the enemy is close by!", new Color(220, 170, 0), 5f);
     }
 
     void Update()
     {
+        if (RoundManager.Instance.IsGameover) return;
+
         TXT_CurrentRound.text = $"Round #{RoundManager.Instance.CurrentRound}: {EnemySpawner.Instance.CurrentWaveEnemiesSpawned} out of {EnemySpawner.Instance.CurrentWaveEnemiesAmount}";
         IMG_RoundTimerForeground.fillAmount = RoundManager.Instance.RoundRemainingDuration / RoundManager.Instance.RoundMaxDuration;
         TXT_RoundTimer.text = $"{RoundManager.Instance.RoundRemainingDuration:0} sec";
         TXT_Gold.text = $"Gold: {PlayerResources.Instance.CurrentGold} (+{PlayerResources.Instance.IncomeRatio:0.00} / sec)";
-        TXT_BastionHealth.text = $"{BastionRef.CurrentHealth:0}/{BastionRef.MaxHealth:0}";
+        TXT_Bounty.text = $"Bounty Ratio: {PlayerResources.Instance.BountyRatio:0.00}";
 
-        if (RoundManager.Instance.IsGameover)
+        List<Attacheable> shields = RoundManager.Instance.BastionRef.GetComponent<Attacher>().GetAttachmentsByType<ShieldAttacheable>();
+        if (shields.Count > 0)
         {
-            TXT_Defeat.gameObject.SetActive(true);
-            TXT_Defeat.enabled = true;
+            float temporaryMaxHP = shields.Aggregate(0f, (acc, s) => acc += s.GetComponent<Damageable>().MaxHealth);
+            float temporaryHP = shields.Aggregate(0f, (acc, s) => acc += s.GetComponent<Damageable>().CurrentHealth);
+            TXT_BastionHealth.text = $"<color=#66b032>{BastionRef.CurrentHealth:0}/{BastionRef.MaxHealth:0}</color> <color=#b0e0e6>({temporaryHP:0}/{temporaryMaxHP:0})</color>";
+        }
+        else
+        {
+            TXT_BastionHealth.text = $"<color=#66b032>{BastionRef.CurrentHealth:0}/{BastionRef.MaxHealth:0}</color>";
         }
 
         if (WarningTimer > 0)
@@ -202,5 +221,11 @@ public class HUDManager : MonoBehaviour
     {
         TXT_Tooltip.text = "";
         TXT_Tooltip.gameObject.SetActive(false);
+    }
+
+    public void ShowDefeat()
+    {
+        TXT_Defeat.gameObject.SetActive(true);
+        TXT_Defeat.enabled = true;
     }
 }
