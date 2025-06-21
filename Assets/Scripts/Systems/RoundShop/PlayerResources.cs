@@ -82,13 +82,11 @@ public class PlayerResources : MonoBehaviour
 
     public void GenerateBounty(int amount)
     {
-        Debug.Log($"Bounty initial amount: {amount}");
         float ratioAmount = amount * BountyRatio;
-        Debug.Log($"Bounty ratioed amount: {ratioAmount}");
         AccumulatedBounty += ratioAmount;
 
         int gainedGold = (int) Mathf.Floor(AccumulatedBounty);
-        Debug.Log($"Bounty final amount: {gainedGold}");
+
         IncreaseGold(gainedGold);
         AccumulatedBounty -= gainedGold;
     }

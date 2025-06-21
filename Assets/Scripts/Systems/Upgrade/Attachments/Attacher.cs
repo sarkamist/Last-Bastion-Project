@@ -42,4 +42,9 @@ public class Attacher : MonoBehaviour
     {
         return AttachmentsList.FindAll(a => a.GetType() == typeof(T)).ToList();
     }
+
+    public List<Attacheable> GetAttachmentsByComponent<T>()
+    {
+        return AttachmentsList.FindAll(a => a.GetComponent<T>() != null).ToList();
+    }
 }

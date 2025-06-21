@@ -29,6 +29,14 @@ public class AttackProjectile : MonoBehaviour
         private set => _currentTarget = value;
     }
 
+    [SerializeField, ReadOnly]
+    private Vector3 _targetPosition;
+    public Vector3 TargetPosition
+    {
+        get => _targetPosition;
+        private set => _targetPosition = value;
+    }
+
     [Header("Targeting")]
     private Attacker _attackSource;
     public Attacker AttackSource
@@ -56,22 +64,32 @@ public class AttackProjectile : MonoBehaviour
     {
         if (CurrentTarget != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, CurrentTarget.Body.position, TravelSpeed * Time.deltaTime);
-            Vector3 direction = CurrentTarget.Body.position - transform.position;
-            float distance = TravelSpeed * Time.deltaTime;
+            TargetPosition = CurrentTarget.Body.position;
+            transform.position = Vector3.MoveTowards(transform.position, TargetPosition, TravelSpeed * Time.deltaTime);
+        }
+        else if (TargetPosition != null)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, TargetPosition, TravelSpeed * Time.deltaTime);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
-            if (direction.magnitude <= distance)
-            {
-                HitTarget();
-                return;
-            }
+        Vector3 direction = TargetPosition - transform.position;
+        float distance = TravelSpeed * Time.deltaTime;
+
+        if (direction.magnitude <= distance)
+        {
+            HitTarget();
+            return;
         }
     }
 
     private void HitTarget()
     {
         Destroy(gameObject);
-        CurrentTarget.TakeDamage(AttackSource, DamageData);
+        if (CurrentTarget != null) CurrentTarget.TakeDamage(AttackSource, DamageData);
     }
 
     public void Configure(Attacker attackSource, Damageable currentTarget, DamageData damageData)

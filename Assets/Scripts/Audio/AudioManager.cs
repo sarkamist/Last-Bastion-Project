@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -86,8 +87,15 @@ public class AudioManager : MonoBehaviour
     }
     void Start()
     {
-        MusicSource.clip = Clip_MenuTheme;
-        MusicSource.Play();
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            PlayTheme(Clip_MenuTheme);
+        }
+        else if (SceneManager.GetActiveScene().name == "MainScene")
+        {
+            PlayTheme(Clip_FightTheme);
+        }
+
     }
 
     public void PlaySFX(AudioClip clip)
@@ -95,9 +103,20 @@ public class AudioManager : MonoBehaviour
         SFXSource.PlayOneShot(clip);
     }
 
+    public void StopSFX()
+    {
+        SFXSource.clip = null;
+        SFXSource.Stop();
+    }
+
     public void PlayTheme(AudioClip clip)
     {
         MusicSource.clip = clip;
         MusicSource.Play();
+    }
+
+    public void StopTheme() {
+        MusicSource.clip = null;
+        MusicSource.Stop();
     }
 }

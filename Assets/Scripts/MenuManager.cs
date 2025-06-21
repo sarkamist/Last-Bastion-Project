@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
+    public static MenuManager Instance { get; private set; }
+
     #region Properties — References
     [Header("References")]
     [SerializeField, ReadOnly]
@@ -17,18 +19,39 @@ public class MenuManager : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         MenuActions = new MenuControlActions();
         MenuActions.Menu.OpenClose.performed += OpenCloseAction;
     }
 
-    public void LoadScene(string sceneName)
+    private void OnEnable()
     {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        MenuActions?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        MenuActions?.Disable();
+    }
+
+    public void LoadMainScene()
+    {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.Clip_OpenMenu);
+        SceneManager.LoadScene("MainScene", LoadSceneMode.Single);
+        AudioManager.Instance.PlayTheme(AudioManager.Instance.Clip_FightTheme);
     }
 
     private void OpenCloseAction(InputAction.CallbackContext context)
     {
-        Debug.Log("xax");
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.Clip_OpenMenu);
     }
 
     public void ExitGame()

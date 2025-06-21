@@ -49,7 +49,7 @@ MonoBehaviour:
   _tooltipDescription:
   - <align="center"><color=#1eff00>Defender Garrison</color></align>
   - <color="white">Defenders come out of the Bastion to attack your foes directly.
-    Mantains a Defender with <color="green">50 maximum health</color> and <color="red">10
+    Mantains a Defender with <color="green">75 maximum health</color> and <color="red">20
     physical</color> damage every 2 seconds.</color>
   - <color="white">Once killed, another Defender will spawn after 20 seconds.</color>
   _attacher: {fileID: 0}

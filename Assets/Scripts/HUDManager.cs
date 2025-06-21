@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -91,6 +92,64 @@ public class HUDManager : MonoBehaviour
         private set => _txt_RefreshShop = value;
     }
 
+    [Header("Info Properties")]
+    [SerializeField, ReadOnly]
+    private GameObject _sec_InformationPanel;
+    public GameObject SEC_InformationPanel
+    {
+        get => _sec_InformationPanel;
+        private set => _sec_InformationPanel = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private GameObject _sec_DamagePanel;
+    public GameObject SEC_DamagePanel
+    {
+        get => _sec_DamagePanel;
+        private set => _sec_DamagePanel = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private TextMeshProUGUI _txt_DamageInfo;
+    public TextMeshProUGUI TXT_DamageInfo
+    {
+        get => _txt_DamageInfo;
+        private set => _txt_DamageInfo = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private GameObject _sec_DefenderPanel;
+    public GameObject SEC_DefenderPanel
+    {
+        get => _sec_DefenderPanel;
+        private set => _sec_DefenderPanel = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private Image _img_DefenderTimerForeground;
+    public Image IMG_DefenderTimerForeground
+    {
+        get => _img_DefenderTimerForeground;
+        private set => _img_DefenderTimerForeground = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private TextMeshProUGUI _txt_ActiveDefenders;
+    public TextMeshProUGUI TXT_ActiveDefenders
+    {
+        get => _txt_ActiveDefenders;
+        private set => _txt_ActiveDefenders = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private TextMeshProUGUI _txt_DefenderTimer;
+    public TextMeshProUGUI TXT_DefenderTimer
+    {
+        get => _txt_DefenderTimer;
+        private set => _txt_DefenderTimer = value;
+    }
+
+
     [Header("Warning Properties")]
     [SerializeField, ReadOnly]
     private float _warningDuration = 0f;
@@ -151,6 +210,15 @@ public class HUDManager : MonoBehaviour
         //Shop Panel
         TXT_RefreshShop = transform.Find("SEC_ShopPanel").Find("BTN_RefreshShop").Find("Text").GetComponent<TextMeshProUGUI>();
         TXT_RefreshShop.text = $"Refresh (<color=#FCC200>{ShopManager.Instance.RefreshCost}g</color>)";
+
+        //Garrison Panel
+        SEC_InformationPanel = transform.Find("SEC_InformationPanel").gameObject;
+        SEC_DamagePanel = SEC_InformationPanel.transform.Find("SEC_DamagePanel").gameObject;
+        TXT_DamageInfo = SEC_DamagePanel.transform.Find("TXT_DamageInfo").GetComponent<TextMeshProUGUI>();
+        SEC_DefenderPanel = SEC_InformationPanel.transform.Find("SEC_DefenderPanel").gameObject;
+        TXT_ActiveDefenders = SEC_DefenderPanel.transform.Find("TXT_ActiveDefendersInfo").GetComponent<TextMeshProUGUI>();
+        IMG_DefenderTimerForeground = SEC_DefenderPanel.transform.Find("IMG_DefenderTimerBackground").Find("IMG_DefenderTimerForeground").GetComponent<Image>();
+        TXT_DefenderTimer = SEC_DefenderPanel.transform.Find("TXT_DefenderTimer").GetComponent<TextMeshProUGUI>();
     }
 
     void Start()
@@ -162,38 +230,10 @@ public class HUDManager : MonoBehaviour
     {
         if (RoundManager.Instance.IsGameover) return;
 
-        TXT_CurrentRound.text = $"Round #{RoundManager.Instance.CurrentRound}: {EnemySpawner.Instance.CurrentWaveEnemiesSpawned} out of {EnemySpawner.Instance.CurrentWaveEnemiesAmount}";
-        IMG_RoundTimerForeground.fillAmount = RoundManager.Instance.RoundRemainingDuration / RoundManager.Instance.RoundMaxDuration;
-        TXT_RoundTimer.text = $"{RoundManager.Instance.RoundRemainingDuration:0} sec";
-        TXT_Gold.text = $"Gold: {PlayerResources.Instance.CurrentGold} (+{PlayerResources.Instance.IncomeRatio:0.00} / sec)";
-        TXT_Bounty.text = $"Bounty Ratio: {PlayerResources.Instance.BountyRatio:0.00}";
-
-        List<Attacheable> shields = RoundManager.Instance.BastionRef.GetComponent<Attacher>().GetAttachmentsByType<ShieldAttacheable>();
-        if (shields.Count > 0)
-        {
-            float temporaryMaxHP = shields.Aggregate(0f, (acc, s) => acc += s.GetComponent<Damageable>().MaxHealth);
-            float temporaryHP = shields.Aggregate(0f, (acc, s) => acc += s.GetComponent<Damageable>().CurrentHealth);
-            TXT_BastionHealth.text = $"<color=#66b032>{BastionRef.CurrentHealth:0}/{BastionRef.MaxHealth:0}</color> <color=#b0e0e6>({temporaryHP:0}/{temporaryMaxHP:0})</color>";
-        }
-        else
-        {
-            TXT_BastionHealth.text = $"<color=#66b032>{BastionRef.CurrentHealth:0}/{BastionRef.MaxHealth:0}</color>";
-        }
-
-        if (WarningTimer > 0)
-        {
-            WarningTimer -= Time.deltaTime;
-            TXT_Warning.color = new Color(
-                TXT_Warning.color.r,
-                TXT_Warning.color.g,
-                TXT_Warning.color.b,
-                WarningTimer / WarningDuration
-            );
-            if (WarningTimer <= 0)
-            {
-                TXT_Warning.gameObject.SetActive(false);
-            }
-        }
+        DisplayRoundInfo();
+        DisplayBastionHealth();
+        DisplayGarrisonInfo();
+        HandleWarningTimer();     
     }
 
     public void ShowWarning(string text, float duration)
@@ -227,5 +267,128 @@ public class HUDManager : MonoBehaviour
     {
         TXT_Defeat.gameObject.SetActive(true);
         TXT_Defeat.enabled = true;
+    }
+
+    public void DisplayRoundInfo()
+    {
+        TXT_CurrentRound.text = $"Round #{RoundManager.Instance.CurrentRound}: {EnemySpawner.Instance.CurrentWaveEnemiesSpawned} out of {EnemySpawner.Instance.CurrentWaveEnemiesAmount}";
+        IMG_RoundTimerForeground.fillAmount = RoundManager.Instance.RoundRemainingDuration / RoundManager.Instance.RoundMaxDuration;
+        TXT_RoundTimer.text = $"{RoundManager.Instance.RoundRemainingDuration:0} sec";
+        TXT_Gold.text = $"Gold: {PlayerResources.Instance.CurrentGold} (+{PlayerResources.Instance.IncomeRatio:0.00} / sec)";
+        TXT_Bounty.text = $"Bounty Ratio: ×{PlayerResources.Instance.BountyRatio:0.00}";
+    }
+
+    public void DisplayBastionHealth()
+    {
+        List<Attacheable> shields = BastionRef.GetComponent<Attacher>().GetAttachmentsByType<ShieldAttacheable>();
+        if (shields.Count > 0)
+        {
+            float temporaryMaxHP = 0;
+            float temporaryHP = 0;
+            bool anyShieldsOutCooldown = false;
+            foreach (ShieldAttacheable shield in shields)
+            {
+                Damageable dmg = shield.GetComponent<Damageable>();
+                temporaryMaxHP += dmg.MaxHealth;
+                temporaryHP += dmg.CurrentHealth;
+                if (shield.ShieldRemainingCooldown <= 0f) anyShieldsOutCooldown = true;
+            }
+            TXT_BastionHealth.text = $"<color=#66b032>{BastionRef.CurrentHealth:0}/{BastionRef.MaxHealth:0}</color>"
+                + $"<space=0.5em><color={(anyShieldsOutCooldown ? "#b0e0e6" : "#555555")}>({temporaryHP:0}/{temporaryMaxHP:0})</color>";
+        }
+        else
+        {
+            TXT_BastionHealth.text = $"<color=#66b032>{BastionRef.CurrentHealth:0}/{BastionRef.MaxHealth:0}</color>";
+        }
+    }
+
+    public void DisplayGarrisonInfo()
+    {
+        List<Attacheable> attackers = BastionRef.GetComponent<Attacher>().GetAttachmentsByComponent<Attacker>();
+        List<Attacheable> defenders = BastionRef.GetComponent<Attacher>().GetAttachmentsByType<DefenderAttacheable>();
+        bool informationPanelOn = (attackers.Count > 0 || defenders.Count > 0);
+
+        if (informationPanelOn) {
+            SEC_InformationPanel.SetActive(true);
+
+            //Total Damage — Accumulate total damage per second
+            if (attackers.Count > 0)
+            {
+                SEC_DamagePanel.SetActive(true);
+
+                float totalDamage = attackers.Aggregate(0f, (acc, attacker) => {
+                    Attacker atk = attacker.GetComponent<Attacker>();
+                    return acc += atk.DamageData.amount / atk.AttackSpeed;
+                });
+
+                TXT_DamageInfo.text = $"<color=\"red\">{totalDamage:0.00} / sec</color>";
+            }
+            else {
+                SEC_DamagePanel.SetActive(false);
+            }
+
+            //Defender Timer — Fetch shortest spawn timer
+            if (defenders.Count > 0)
+            {
+                SEC_DefenderPanel.SetActive(true);
+
+                int activeDefenders = 0;
+                float shortestTimer = float.MaxValue;
+                float shortestTimerCooldown = float.MaxValue;
+                bool anyDefenderSpawning = false;
+                foreach (DefenderAttacheable defender in defenders)
+                {
+                    Debug.Log($"{defender.SpawnTimer} / {defender.SpawnCooldown}");
+                    if (defender.SpawnTimer > 0f && defender.SpawnTimer < shortestTimer)
+                    {
+                        shortestTimer = defender.SpawnTimer;
+                        shortestTimerCooldown = defender.SpawnCooldown;
+                        anyDefenderSpawning = true;
+                    } else
+                    {
+                        activeDefenders++;
+                    }
+                }
+
+                TXT_ActiveDefenders.text = $"{activeDefenders}";
+                if (anyDefenderSpawning)
+                {
+                    IMG_DefenderTimerForeground.transform.parent.gameObject.SetActive(true);
+                    IMG_DefenderTimerForeground.fillAmount = shortestTimer / shortestTimerCooldown;
+                    TXT_DefenderTimer.text = $"{shortestTimer:0}s";
+                }
+                else
+                {
+                    IMG_DefenderTimerForeground.transform.parent.gameObject.SetActive(false);
+                    TXT_DefenderTimer.text = $"None in training";
+                }
+            }
+            else
+            {
+                SEC_DefenderPanel.SetActive(false);
+            }
+
+        } else
+        {
+            SEC_InformationPanel.SetActive(false);
+        }
+    }
+
+    public void HandleWarningTimer()
+    {
+        if (WarningTimer > 0)
+        {
+            WarningTimer -= Time.deltaTime;
+            TXT_Warning.color = new Color(
+                TXT_Warning.color.r,
+                TXT_Warning.color.g,
+                TXT_Warning.color.b,
+                WarningTimer / WarningDuration
+            );
+            if (WarningTimer <= 0)
+            {
+                TXT_Warning.gameObject.SetActive(false);
+            }
+        }
     }
 }

@@ -28,11 +28,11 @@ public class ShopManager : MonoBehaviour
     }
 
     [SerializeField]
-    private List<Weighted<Upgrade>> _availableAttacheables;
-    public List<Weighted<Upgrade>> AvailableAttacheables
+    private List<Weighted<Upgrade>> _availableUpgrades;
+    public List<Weighted<Upgrade>> AvailableUpgrades
     {
-        get => _availableAttacheables;
-        set => _availableAttacheables = value;
+        get => _availableUpgrades;
+        set => _availableUpgrades = value;
     }
 
     [SerializeField, ReadOnly]
@@ -87,6 +87,7 @@ public class ShopManager : MonoBehaviour
     public void RefreshShop() {
         if (PlayerResources.Instance.DecreaseGold(RefreshCost))
         {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.Clip_OpenMenu);
             RerollShop();
         }
     }
@@ -112,6 +113,8 @@ public class ShopManager : MonoBehaviour
             buttonTxtCost.text = $"{upgrade.GoldCost}g";
 
             buttonComponent.onClick.AddListener(() => {
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.Clip_OpenMenu);
+
                 int index = AvailableButtons.IndexOf(button);
                 Upgrade upgrade = CurrentShop[index] ?? null;
 
@@ -162,13 +165,13 @@ public class ShopManager : MonoBehaviour
 
     private float GetWeights()
     {
-        return AvailableAttacheables.Aggregate(0f, (acc, value) => acc += value.weight);
+        return AvailableUpgrades.Aggregate(0f, (acc, value) => acc += value.weight);
     }
 
     private Upgrade GetWeightedUpgrade()
     {
         float targetWeight = Random.Range(0, GetWeights());
-        foreach (Weighted<Upgrade> item in AvailableAttacheables)
+        foreach (Weighted<Upgrade> item in AvailableUpgrades)
         {
             if (targetWeight < item.weight)
             {

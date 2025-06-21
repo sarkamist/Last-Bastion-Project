@@ -54,8 +54,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 1
   _body: {fileID: 0}
-  _maxHealth: 50
+  _maxHealth: 75
   _currentHealth: 0
+  _regenerationRate: 0
   _canDie: 1
 --- !u!114 &8048316594469991569
 MonoBehaviour:
@@ -95,7 +96,7 @@ MonoBehaviour:
   _attackSpeed: 2
   _attackCooldown: 0
   _damageData:
-    amount: 10
+    amount: 20
     type: 1
 --- !u!114 &4127491480876160647
 MonoBehaviour:

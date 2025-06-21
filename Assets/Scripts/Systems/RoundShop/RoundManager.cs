@@ -87,6 +87,7 @@ public class RoundManager : MonoBehaviour
         {
             if (IsRoundEnded)
             {
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.Clip_NewWave);
                 CurrentRound += 1;
                 RoundRemainingDuration = RoundMaxDuration;
                 RoundStartEvent?.Invoke(this, RoundRemainingDuration);
@@ -105,7 +106,9 @@ public class RoundManager : MonoBehaviour
 
     public void OnBastionDeath(Damageable.DamageableDeathContext context)
     {
+        AudioManager.Instance.PlayTheme(AudioManager.Instance.Clip_DefeatTheme);
         IsGameover = true;
         HUDManager.Instance.ShowDefeat();
+        Time.timeScale = 0;
     }
 }
