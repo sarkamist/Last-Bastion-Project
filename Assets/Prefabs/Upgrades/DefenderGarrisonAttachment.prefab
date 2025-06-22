@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _displayName: <color=#1eff00>Defender Garrison</color>
-  _goldCost: 175
+  _goldCost: 180
   _tooltipDescription:
   - <align="center"><color=#1eff00>Defender Garrison</color></align>
   - <color="white">Defenders come out of the Bastion to attack your foes directly.

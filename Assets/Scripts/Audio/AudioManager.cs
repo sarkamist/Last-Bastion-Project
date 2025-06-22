@@ -114,4 +114,12 @@ public class AudioManager : MonoBehaviour
         MusicSource.clip = null;
         MusicSource.Stop();
     }
+
+    public void AdvanceLevel(int level)
+    {
+
+        if (level >= 5 && MusicSource.clip != Clip_FightTheme) {
+            MusicSource.clip = Clip_FightTheme;
+        }
+    }
 }

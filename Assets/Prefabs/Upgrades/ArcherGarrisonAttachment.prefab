@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _displayName: <color=#C0C0C0>Archer Garrison</color>
-  _goldCost: 60
+  _goldCost: 80
   _tooltipDescription:
   - <align="center"><color=#C0C0C0>Archer Garrison</color></align>
   - <color="white">Archer recruits loose arrows upon your enemies from a 50 units

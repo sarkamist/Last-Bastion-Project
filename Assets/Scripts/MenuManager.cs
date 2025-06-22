@@ -110,6 +110,7 @@ public class MenuManager : MonoBehaviour
         if (!PlayerPrefs.HasKey("sfxVolume"))
         {
             PlayerPrefs.SetFloat("sfxVolume", 0.8f);
+            SLD_SFXVolume.value = 0.8f;
         }
         else
         {
@@ -119,6 +120,7 @@ public class MenuManager : MonoBehaviour
         if (!PlayerPrefs.HasKey("musicVolume"))
         {
             PlayerPrefs.SetFloat("musicVolume", 0.6f);
+            SLD_MusicVolume.value = 0.6f;
         }
         else
         {

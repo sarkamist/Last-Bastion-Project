@@ -49,8 +49,8 @@ MonoBehaviour:
   _body: {fileID: 0}
   _maxHealth: 100
   _currentHealth: 0
-  _regenerationRate: 1
-  _canDie: 0
+  _regenerationRate: 2
+  _canDie: 1
 --- !u!114 &1046556526833990143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,9 +69,9 @@ MonoBehaviour:
   - <align="center"><color=#1EFF00>Barrier Arcanist</color></align>
   - <color="white">Barrier arcanists create temporary shields that absorb damage
     for the Bastion. Has <color="green">100 maximum health</color> and regenerates
-    <color="green">1 HP</color> every second.</color>
-  - <color="white">Once depleted, it needs 10 seconds before absorbing damage again.</color>
+    <color="green">2 HP</color> every second.</color>
+  - <color="white">Once depleted, it needs 15 seconds before absorbing damage again.</color>
   _attacher: {fileID: 0}
   _damageableRef: {fileID: 0}
-  _shieldCooldown: 10
+  _shieldCooldown: 15
   _shieldRemainingCooldown: 0

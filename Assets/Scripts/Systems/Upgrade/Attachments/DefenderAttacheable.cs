@@ -26,7 +26,7 @@ public class DefenderAttacheable : Attacheable
     public float SpawnCooldown
     {
         get => _spawnCooldown;
-        private set => _spawnCooldown = value;
+        set => _spawnCooldown = value;
     }
 
     [SerializeField, ReadOnly]

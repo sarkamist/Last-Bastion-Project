@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _displayName: <color=#C0C0C0>Wooden Reinforcements</color>
-  _goldCost: 75
+  _goldCost: 80
   _tooltipDescription:
   - <align="center"><color=#C0C0C0>Wooden Reinforcements</color></align>
   - <color="white">Wooden reinforcements allow the Bastion to sustain more damage.
-    Increases the Bastion's maximum <color="green">HP</color> by <color="green">75</color>.</color>
-  _maximumHealthBonus: 75
+    Increases the Bastion's maximum <color="green">HP</color> by <color="green">100</color>.</color>
+  _maximumHealthBonus: 100
