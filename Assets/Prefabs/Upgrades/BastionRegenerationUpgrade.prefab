@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _displayName: <color=#1EFF00>Repair Crew</color>
-  _goldCost: 175
+  _goldCost: 150
   _tooltipDescription:
   - <align="center"><color=#1EFF00>Repair Crew</color></align>
   - <color="white">Repair crews work tirelessly to repair all damage dealt upon our

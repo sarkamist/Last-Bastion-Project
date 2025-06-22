@@ -64,6 +64,7 @@ public class DefenderAttacheable : Attacheable
     void SpawnDefender()
     {
         CurrentDefender = Instantiate(DefenderPrefab, Random.insideUnitSphere * 5f + Attacher.gameObject.transform.position, Random.rotation);
+        CurrentDefender.transform.position = new Vector3(CurrentDefender.transform.position.x, Attacher.gameObject.transform.position.y, CurrentDefender.transform.position.z);
         CurrentDefender.GetComponent<Damageable>().DamageableDeathEvent += OnDefenderDeath;
     }
 }

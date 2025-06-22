@@ -109,6 +109,5 @@ public class RoundManager : MonoBehaviour
         AudioManager.Instance.PlayTheme(AudioManager.Instance.Clip_DefeatTheme);
         IsGameover = true;
         HUDManager.Instance.ShowDefeat();
-        Time.timeScale = 0;
     }
 }

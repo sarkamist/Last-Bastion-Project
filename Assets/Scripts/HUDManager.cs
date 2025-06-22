@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -90,6 +89,14 @@ public class HUDManager : MonoBehaviour
     {
         get => _txt_RefreshShop;
         private set => _txt_RefreshShop = value;
+    }
+
+    [SerializeField, ReadOnly]
+    private Button _btn_Menu;
+    public Button BTN_Menu
+    {
+        get => _btn_Menu;
+        private set => _btn_Menu = value;
     }
 
     [Header("Info Properties")]
@@ -219,6 +226,11 @@ public class HUDManager : MonoBehaviour
         TXT_ActiveDefenders = SEC_DefenderPanel.transform.Find("TXT_ActiveDefendersInfo").GetComponent<TextMeshProUGUI>();
         IMG_DefenderTimerForeground = SEC_DefenderPanel.transform.Find("IMG_DefenderTimerBackground").Find("IMG_DefenderTimerForeground").GetComponent<Image>();
         TXT_DefenderTimer = SEC_DefenderPanel.transform.Find("TXT_DefenderTimer").GetComponent<TextMeshProUGUI>();
+
+        //Menu Button
+        BTN_Menu = transform.Find("BTN_Menu").GetComponent<Button>();
+        BTN_Menu.onClick.RemoveAllListeners();
+        BTN_Menu.onClick.AddListener(MenuManager.Instance.OpenSettingsPanel);
     }
 
     void Start()
@@ -338,7 +350,6 @@ public class HUDManager : MonoBehaviour
                 bool anyDefenderSpawning = false;
                 foreach (DefenderAttacheable defender in defenders)
                 {
-                    Debug.Log($"{defender.SpawnTimer} / {defender.SpawnCooldown}");
                     if (defender.SpawnTimer > 0f && defender.SpawnTimer < shortestTimer)
                     {
                         shortestTimer = defender.SpawnTimer;

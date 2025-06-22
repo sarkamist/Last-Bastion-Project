@@ -61,6 +61,7 @@ public class HealthBar : MonoBehaviour
         {
             DamageableRef = damageable;
             DamageableRef.DamageTakenEvent += OnDamageTaken;
+            DamageableRef.HealthGainEvent += OnHealthGained;
         }
         else
         {
@@ -72,14 +73,25 @@ public class HealthBar : MonoBehaviour
         _targetFill = 1f;
     }
 
-    void Update() {
+    void Update()
+    {
         HealthBarCanvas.transform.rotation = CameraRef.transform.rotation;
         HealthBarForeground.fillAmount = Mathf.MoveTowards(HealthBarForeground.fillAmount, TargetFill, AnimationSpeed * Time.deltaTime);
     }
 
-    void OnDamageTaken(Damageable.DamageTakenContext context) {
+    void OnDamageTaken(Damageable.DamageTakenContext context)
+    {
         if (HealthBarForeground == null) return;
 
-        TargetFill = (float) (context.origin.CurrentHealth / context.origin.MaxHealth);
+        TargetFill = (float)(context.origin.CurrentHealth / context.origin.MaxHealth);
+    }
+
+    Damageable.HealthGainContext OnHealthGained(Damageable.HealthGainContext context)
+    {
+        if (HealthBarForeground == null) return context;
+
+        TargetFill = (float)(context.origin.CurrentHealth / context.origin.MaxHealth);
+
+        return context;
     }
 }

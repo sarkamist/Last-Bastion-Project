@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -84,18 +83,14 @@ public class AudioManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
-    void Start()
-    {
-        if (SceneManager.GetActiveScene().name == "MainMenu")
-        {
-            PlayTheme(Clip_MenuTheme);
-        }
-        else if (SceneManager.GetActiveScene().name == "MainScene")
-        {
-            PlayTheme(Clip_FightTheme);
-        }
 
+        SFXSource.ignoreListenerVolume = true;
+        MusicSource.ignoreListenerVolume = true;
+    }
+
+    private void Start()
+    {
+        PlayTheme(Clip_MenuTheme);
     }
 
     public void PlaySFX(AudioClip clip)

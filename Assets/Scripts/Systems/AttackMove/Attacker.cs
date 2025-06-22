@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
 public class Attacker : MonoBehaviour
 {
     #region Properties
@@ -139,7 +138,7 @@ public class Attacker : MonoBehaviour
 
         if (damageables.Count > 0)
         {
-            AcquisitionDelay = Random.Range(AttackCooldown, AttackCooldown * 1.5f);
+            AcquisitionDelay = Random.Range(AttackSpeed, AttackSpeed * 1.5f);
             CurrentTarget = damageables[Random.Range(0, damageables.Count)];
         }
         else

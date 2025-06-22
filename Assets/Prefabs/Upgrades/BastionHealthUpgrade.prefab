@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _displayName: <color=#C0C0C0>Wooden Reinforcements</color>
-  _goldCost: 100
+  _goldCost: 75
   _tooltipDescription:
   - <align="center"><color=#C0C0C0>Wooden Reinforcements</color></align>
   - <color="white">Wooden reinforcements allow the Bastion to sustain more damage.

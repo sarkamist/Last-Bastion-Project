@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _displayName: <color=#1EFF00>Barrier Arcanist</color>
-  _goldCost: 175
+  _goldCost: 150
   _tooltipDescription:
   - <align="center"><color=#1EFF00>Barrier Arcanist</color></align>
   - <color="white">Barrier arcanists create temporary shields that absorb damage
